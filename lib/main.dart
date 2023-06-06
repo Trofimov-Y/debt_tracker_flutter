@@ -32,5 +32,4 @@ Future<void> main() async {
       // TODO Add error reporting with Firebase Crashlytics
     },
   );
-  runApp(const Application());
 }
