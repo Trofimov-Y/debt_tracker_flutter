@@ -11,10 +11,6 @@ analyzer:
 # can be found at https://dart-lang.github.io/linter/lints/options/options.html
 linter:
   rules:
-    # Util classes are awesome!
-    # avoid_classes_with_only_static_members: false
-
-    # Make constructors the first thing in every class
+    sort_pub_dependencies: false
     sort_constructors_first: true
-
     prefer_single_quotes: true
