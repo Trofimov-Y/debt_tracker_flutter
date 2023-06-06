@@ -1,3 +1,4 @@
+import 'package:debt_tracker/theme/themes.dart';
 import 'package:flutter/material.dart';
 
 class Application extends StatelessWidget {
@@ -5,10 +6,11 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Debt Tracker',
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold()
+      theme: theme,
+      darkTheme: darkTheme,
+      home: const Scaffold(),
     );
   }
 }
