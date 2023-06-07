@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "61107877767",
+    "project_id": "debts-debt-tracker",
+    "storage_bucket": "debts-debt-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61107877767:android:9b1c2ceac018b22ad64522",
+        "android_client_info": {
+          "package_name": "ua.debts.debt_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61107877767-ep5ipd8bbo0fv80rltrm49kdrijcj393.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBmdr9Fg0VZvubgC0sPk_7-7sFIhEopEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61107877767-ep5ipd8bbo0fv80rltrm49kdrijcj393.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "61107877767-7bh24d4b91bbai2q2ev83kk8tput9fjj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ua.debts.debtTracker.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

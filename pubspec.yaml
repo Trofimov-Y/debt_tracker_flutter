@@ -36,6 +36,12 @@ dependencies:
   # Localizations
   intl: 0.18.1
 
+  # Firebase
+  firebase_core: 2.13.1
+  firebase_crashlytics: 3.3.2
+  firebase_auth: 4.6.2
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
