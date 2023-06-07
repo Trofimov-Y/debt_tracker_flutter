@@ -1,5 +1,5 @@
-import 'package:debt_tracker/theme/color_schemes.dart';
-import 'package:debt_tracker/theme/text_theme.dart';
+import 'package:debt_tracker/presentation/theme/color_schemes.dart';
+import 'package:debt_tracker/presentation/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 
 final theme = ThemeData(
