@@ -21,7 +21,6 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -58,23 +57,9 @@ android {
         compileSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-
-         archivesBaseName = "Debt-Tracker.${versionName}"
+        archivesBaseName = "Debt-Tracker.${versionName}"
     }
-    flavorDimensions "environment"
-    productFlavors {
-        development {
-            dimension "environment"
-            applicationIdSuffix ".dev"
-            manifestPlaceholders['appName'] = "Dev Debts - Debt Tracker"
-            manifestPlaceholders['host'] = "api.ua.debts.debt_tracker-dev"
-        }
-        production {
-            dimension "environment"
-            manifestPlaceholders['appName'] = "Debts - Debt Tracker"
-            manifestPlaceholders['host'] = "api.ua.debts.debt_tracker"
-        }
-    }
+    
     signingConfigs {
         debug {
             storeFile rootProject.file("signin/debug.keystore")
