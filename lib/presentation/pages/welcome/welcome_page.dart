@@ -1,13 +1,9 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/core/assets/lottie_assets.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:debt_tracker/presentation/routing/app_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 
@@ -48,14 +44,15 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                   ),
                   constraints: BoxConstraints(
                     minWidth: constraints.maxWidth,
-                    maxHeight: constraints.maxHeight,
-                  ),
-                  padding: EdgeInsets.only(
-                    top: max(context.mediaQuery.padding.top, 24),
-                    bottom: context.mediaQuery.padding.bottom + 16,
+                    maxHeight: constraints.maxHeight - context.mediaQuery.padding.top,
                   ),
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 56),
+                    padding: EdgeInsets.only(
+                      left: 56,
+                      right: 56,
+                      top: 32,
+                      bottom: context.mediaQuery.padding.bottom + 16,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -81,10 +78,7 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                           ],
                         ),
                         const Gap(32),
-                        FilledButton(
-                          onPressed: () {},
-                          child: const Text('Sign up'),
-                        ),
+                        FilledButton(onPressed: () {}, child: const Text('Sign up')),
                         const Gap(8),
                         FilledButton.tonal(
                           onPressed: () {
