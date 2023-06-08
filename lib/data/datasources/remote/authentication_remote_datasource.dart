@@ -1,8 +1,9 @@
+import 'package:debt_tracker/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
 abstract interface class AuthenticationRemoteDataSource {
-  Stream<User?> getAuthenticationChanges();
+  Stream<UserModel?> getAuthenticationChanges();
 }
 
 @Injectable(as: AuthenticationRemoteDataSource)
@@ -12,7 +13,14 @@ class AuthenticationRemoteDataSourceImpl implements AuthenticationRemoteDataSour
   final FirebaseAuth firebaseAuthInstance;
 
   @override
-  Stream<User?> getAuthenticationChanges() {
-    return firebaseAuthInstance.authStateChanges();
+  Stream<UserModel?> getAuthenticationChanges() {
+    return firebaseAuthInstance.authStateChanges().map((user) {
+      if (user == null) return null;
+      return UserModel(
+        email: user.email,
+        name: user.displayName,
+        isAnonymous: user.isAnonymous,
+      );
+    });
   }
 }

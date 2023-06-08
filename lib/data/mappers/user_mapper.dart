@@ -1,22 +1,13 @@
+import 'package:auto_mappr_annotation/auto_mappr_annotation.dart';
+import 'package:debt_tracker/data/models/user_model.dart';
 import 'package:debt_tracker/domain/entities/user_entity.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
-abstract class UserMapper {
-  UserEntity? fromModel(User? model);
-}
+part 'user_mapper.g.dart';
 
-@Injectable(as: UserMapper)
-class UserMapperImpl implements UserMapper {
-  @override
-  UserEntity? fromModel(User? model) {
-    if (model == null) {
-      return null;
-    }
-    return UserEntity(
-      email: model.email,
-      name: model.displayName,
-      isAnonymous: model.isAnonymous,
-    );
-  }
-}
+@Injectable()
+@AutoMappr([
+  MapType<UserEntity, UserModel>(),
+  MapType<UserModel, UserEntity>(),
+])
+class UserMapper extends $UserMapper {}

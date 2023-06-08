@@ -17,7 +17,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Stream<UserEntity?> getAuthenticationChanges() {
     return _authenticationRemoteDataSource.getAuthenticationChanges().map(
-          (model) => _userMapper.fromModel(model),
+          (model) => _userMapper.tryConvert(model),
         );
   }
 }

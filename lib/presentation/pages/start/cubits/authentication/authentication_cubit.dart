@@ -30,11 +30,23 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   void _init() {
     _authenticationChangesSubscription = _getAuthenticationChangesUseCase().listen((user) {
       _logger.d('Authentication (User) - $user');
-      if (user == null) {
-        emit(const AuthenticationState.unauthenticated());
-      } else {
-        emit(AuthenticationState.authenticated(user: user));
-      }
+      state.maybeMap(
+        initial: (_) {
+          if (user == null) {
+            emit(const AuthenticationState.unauthenticated());
+          } else {
+            emit(AuthenticationState.authenticated(user: user));
+          }
+        },
+        orElse: () {
+          if (user == null) {
+            emit(const AuthenticationState.unauthenticated());
+            _router.replaceAll([const WelcomeRoute()]);
+          } else {
+            emit(AuthenticationState.authenticated(user: user));
+          }
+        },
+      );
     });
   }
 
