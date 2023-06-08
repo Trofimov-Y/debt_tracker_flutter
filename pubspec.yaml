@@ -30,6 +30,8 @@ dependencies:
   freezed_annotation: 2.2.0
   auto_mappr_annotation: 1.1.0
   gap: 3.0.0
+  flutter_svg: 2.0.6
+  flutter_keyboard_visibility: ^5.4.1
 
   # Networking
   dio: 5.2.0
@@ -67,6 +69,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/svg/
     - assets/images/
     - assets/lottie/
 
