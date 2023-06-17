@@ -14,7 +14,6 @@ import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
-import 'package:gap/gap.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 @RoutePage()
@@ -56,7 +55,6 @@ class HomePage extends StatelessWidget {
                       },
                       onRemindPressed: () {},
                     ),
-                    const Gap(16),
                   ],
                 ),
               ),
