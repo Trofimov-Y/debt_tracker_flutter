@@ -9,5 +9,5 @@ extension TextStyleExtensions on TextStyle {
 
   TextStyle get regular => copyWith(fontWeight: FontWeight.w400);
 
-  TextStyle withColor(Color color) => copyWith(color: color);
+  TextStyle withColor(Color? color) => copyWith(color: color);
 }
