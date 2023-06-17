@@ -11,6 +11,9 @@ final theme = ThemeData(
     contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
     filled: true,
   ),
+  listTileTheme: ListTileThemeData(
+    tileColor: lightColorScheme.surface,
+  ),
   colorScheme: lightColorScheme,
 );
 
@@ -20,6 +23,9 @@ final darkTheme = ThemeData(
   fontFamily: fontFamily,
   textTheme: textTheme,
   colorScheme: darkColorScheme,
+  listTileTheme: ListTileThemeData(
+    tileColor: darkColorScheme.surface,
+  ),
   inputDecorationTheme: const InputDecorationTheme(
     contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
     filled: true,
