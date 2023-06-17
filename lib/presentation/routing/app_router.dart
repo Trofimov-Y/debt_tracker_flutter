@@ -16,32 +16,7 @@ class AppRouter extends _$AppRouter {
   final GlobalKey<NavigatorState> navigatorKey;
 
   @override
-  RouteType get defaultRouteType => RouteType.custom(
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: Tween<double>(begin: 1.0, end: 0.0).animate(
-              CurvedAnimation(parent: secondaryAnimation, curve: Curves.fastOutSlowIn),
-            ),
-            child: SlideTransition(
-              position: Tween<Offset>(begin: Offset.zero, end: const Offset(-0.2, 0.0)).animate(
-                CurvedAnimation(parent: secondaryAnimation, curve: Curves.fastOutSlowIn),
-              ),
-              child: FadeTransition(
-                opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-                  CurvedAnimation(parent: animation, curve: Curves.fastOutSlowIn),
-                ),
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0.2, 0.0),
-                    end: Offset.zero,
-                  ).animate(CurvedAnimation(parent: animation, curve: Curves.fastOutSlowIn)),
-                  child: child,
-                ),
-              ),
-            ),
-          );
-        },
-      );
+  RouteType get defaultRouteType => const RouteType.cupertino();
 
   @override
   final List<AutoRoute> routes = [
