@@ -1,3 +1,4 @@
+import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -23,7 +24,7 @@ class HeaderActionsButtons extends StatelessWidget {
           child: _HeaderButton(
             icon: Icons.add,
             onPressed: onAddEntryPressed,
-            text: 'Add an entry',
+            text: S.of(context).addEntry,
           ),
         ),
         const Gap(28),
@@ -31,7 +32,7 @@ class HeaderActionsButtons extends StatelessWidget {
           child: _HeaderButton(
             icon: Icons.notifications,
             onPressed: onRemindPressed,
-            text: 'Remind',
+            text: S.of(context).remind,
           ),
         ),
         const Gap(28),
@@ -39,7 +40,7 @@ class HeaderActionsButtons extends StatelessWidget {
           child: _HeaderButton(
             icon: Icons.notes,
             onPressed: onAllEntriesPressed,
-            text: 'All Entries',
+            text: S.of(context).allEntries,
           ),
         ),
       ],

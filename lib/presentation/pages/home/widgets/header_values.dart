@@ -1,16 +1,17 @@
+import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class HeaderValues extends StatelessWidget {
   const HeaderValues({
     super.key,
-    required this.myDebt,
-    required this.oweMe,
+    required this.owedByMe,
+    required this.owedToMe,
     this.decimalPlaces = 2,
     required this.currencySymbol,
   });
-  final double myDebt;
-  final double oweMe;
+  final double owedByMe;
+  final double owedToMe;
   final int decimalPlaces;
   final String currencySymbol;
 
@@ -23,7 +24,7 @@ class HeaderValues extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'Owe me',
+                S.of(context).owedToMe,
                 style: context.textTheme.titleLarge,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -31,7 +32,7 @@ class HeaderValues extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                '${oweMe.toStringAsFixed(decimalPlaces)} $currencySymbol',
+                '${owedToMe.toStringAsFixed(decimalPlaces)} $currencySymbol',
                 style: context.textTheme.titleLarge,
                 textAlign: TextAlign.end,
                 overflow: TextOverflow.visible,
@@ -43,7 +44,7 @@ class HeaderValues extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'My Debt',
+                S.of(context).owedByMe,
                 style: context.textTheme.titleLarge,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -51,7 +52,7 @@ class HeaderValues extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                '${myDebt.toStringAsFixed(decimalPlaces)} $currencySymbol',
+                '${owedByMe.toStringAsFixed(decimalPlaces)} $currencySymbol',
                 style: context.textTheme.titleLarge,
                 textAlign: TextAlign.end,
                 overflow: TextOverflow.visible,
