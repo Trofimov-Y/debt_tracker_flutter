@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/core/assets/lottie_assets.dart';
+import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:debt_tracker/presentation/routing/app_router.dart';
@@ -57,7 +58,7 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'Welcome',
+                          S.of(context).welcome,
                           style: context.textTheme.titleLarge?.semiBold,
                           textAlign: TextAlign.center,
                         ),
@@ -66,32 +67,32 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                           alignment: WrapAlignment.center,
                           children: [
                             Text(
-                              'Debts',
+                              S.of(context).debtsAppName,
                               style: context.textTheme.titleLarge?.medium.withColor(
                                 context.colors.primary,
                               ),
                             ),
                             Text(
-                              ' - Debt Tracker',
+                              ' - ${S.of(context).debtTrackerSubAppName}',
                               style: context.textTheme.titleLarge,
                             ),
                           ],
                         ),
                         const Gap(32),
-                        FilledButton(onPressed: () {}, child: const Text('Sign up')),
+                        FilledButton(onPressed: () {}, child: Text(S.of(context).signUp)),
                         const Gap(8),
                         FilledButton.tonal(
                           onPressed: () {
                             context.router.push(const SignInRoute());
                           },
-                          child: const Text('I already have an account'),
+                          child: Text(S.of(context).haveAccount),
                         ),
                         const Gap(16),
                         TextButton(
                           onPressed: () {
                             context.router.push(const HomeRoute());
                           },
-                          child: const Text('Sign as guest'),
+                          child: Text(S.of(context).singAsGuest),
                         )
                       ],
                     ),

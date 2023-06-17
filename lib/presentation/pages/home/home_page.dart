@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dartx/dartx.dart';
 import 'package:debt_tracker/core/extensions/date_time_extensions.dart';
+import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:debt_tracker/presentation/pages/home/delegates/home_persistent_header_delegate.dart';
@@ -9,6 +10,7 @@ import 'package:debt_tracker/presentation/pages/home/widgets/header_actions_butt
 import 'package:debt_tracker/presentation/pages/home/widgets/header_status_bar.dart';
 import 'package:debt_tracker/presentation/pages/home/widgets/header_values.dart';
 import 'package:debt_tracker/presentation/pages/home/widgets/operation_list_tile.dart';
+import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -37,7 +39,7 @@ class HomePage extends StatelessWidget {
               minExtentProtoType: Container(
                 height: 56,
                 alignment: Alignment.center,
-                child: const HeaderStatusBar(currencySymbol: '\$', myDebt: debt, oweMe: owed),
+                child: const HeaderStatusBar(currencySymbol: '\$', owedByMe: debt, owedToMe: owed),
               ),
               maxExtentProtoType: Container(
                 height: 220,
@@ -45,11 +47,13 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   children: [
                     const Expanded(
-                      child: HeaderValues(currencySymbol: '\$', myDebt: debt, oweMe: owed),
+                      child: HeaderValues(currencySymbol: '\$', owedByMe: debt, owedToMe: owed),
                     ),
                     HeaderActionsButtons(
                       onAddEntryPressed: () {},
-                      onAllEntriesPressed: () {},
+                      onAllEntriesPressed: () {
+                        context.router.push(const EntriesRoute());
+                      },
                       onRemindPressed: () {},
                     ),
                     const Gap(16),
@@ -85,7 +89,7 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                     child: Text(
-                      date.isToday ? 'Today' : date.dMMMMFormat,
+                      date.isToday ? S.of(context).today : date.dMMMMFormat,
                       style: context.textTheme.bodyMedium?.withColor(context.colors.onSurface),
                     ),
                   ),

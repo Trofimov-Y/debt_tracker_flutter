@@ -5,21 +5,22 @@ import 'package:flutter/material.dart';
 class HeaderStatusBar extends StatelessWidget {
   const HeaderStatusBar({
     super.key,
-    required this.myDebt,
-    required this.oweMe,
+    required this.owedByMe,
+    required this.owedToMe,
     required this.currencySymbol,
     this.decimalPlaces = 2,
   });
 
-  final double myDebt;
-  final double oweMe;
+  final double owedByMe;
+  final double owedToMe;
+
   final int decimalPlaces;
   final String currencySymbol;
 
   @override
   Widget build(BuildContext context) {
-    final myDebtParts = myDebt.separateParts(decimalPlaces);
-    final oweMeParts = oweMe.separateParts(decimalPlaces);
+    final myDebtParts = owedByMe.separateParts(decimalPlaces);
+    final oweMeParts = owedToMe.separateParts(decimalPlaces);
 
     return RichText(
       text: TextSpan(
