@@ -79,11 +79,13 @@ class HomePage extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: context.colors.surface,
                       boxShadow: [
-                        BoxShadow(
-                          color: context.colors.surface,
-                          blurRadius: 8,
-                          offset: const Offset(0, 8),
-                        ),
+                        if (state.isPinned) ...[
+                          BoxShadow(
+                            color: context.colors.surface,
+                            blurRadius: 8,
+                            offset: const Offset(0, 8),
+                          ),
+                        ]
                       ],
                     ),
                     child: Text(
