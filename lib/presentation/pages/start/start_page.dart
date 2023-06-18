@@ -17,10 +17,10 @@ class StartPage extends StatelessWidget implements AutoRouteWrapper {
         listener: (context, state) {
           state.mapOrNull(
             authenticated: (_) {
-              context.router.replaceAll([const HomeRoute()]);
+              context.router.replaceAll([const HomeRoute()], updateExistingRoutes: false);
             },
             unauthenticated: (_) {
-              context.router.replaceAll([const WelcomeRoute()]);
+              context.router.replaceAll([const WelcomeRoute()], updateExistingRoutes: false);
             },
           );
         },
