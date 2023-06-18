@@ -41,7 +41,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         orElse: () {
           if (user == null) {
             emit(const AuthenticationState.unauthenticated());
-            _router.replaceAll([const WelcomeRoute()]);
+            _router.replaceAll([const WelcomeRoute()], updateExistingRoutes: false);
           } else {
             emit(AuthenticationState.authenticated(user: user));
           }

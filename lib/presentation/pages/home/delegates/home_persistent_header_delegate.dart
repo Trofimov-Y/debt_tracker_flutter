@@ -1,6 +1,7 @@
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class HomePersistentHeaderDelegate extends SliverPinnedPersistentHeaderDelegate {
@@ -23,33 +24,40 @@ class HomePersistentHeaderDelegate extends SliverPinnedPersistentHeaderDelegate 
       (1 - (shrinkOffset / (maxExtent - (minExtent ?? 0))).clamp(0, 1)).toStringAsFixed(1),
     );
 
-    return ColoredBox(
-      color: context.colors.background,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          if (!isCollapsed) ...[
-            Positioned(
-              top: -shrinkOffset,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: AnimatedOpacity(
-                opacity: collapseAnimationPercentage,
-                duration: const Duration(milliseconds: 100),
-                child: maxExtentProtoType,
+    return AnnotatedRegion(
+      value: const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      child: Material(
+        color: ElevationOverlay.applySurfaceTint(
+          context.colors.surface,
+          context.colors.surfaceTint,
+          isCollapsed ? 3 : 0,
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (!isCollapsed) ...[
+              Positioned(
+                top: -shrinkOffset + 16,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: AnimatedOpacity(
+                  opacity: collapseAnimationPercentage,
+                  duration: const Duration(milliseconds: 100),
+                  child: maxExtentProtoType,
+                ),
               ),
-            ),
+            ],
+            if (isCollapsed) ...[
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: minExtentProtoType,
+              ).animate().fadeIn(),
+            ],
           ],
-          if (isCollapsed) ...[
-            Positioned(
-              top: context.mediaQuery.padding.top,
-              left: 0,
-              right: 0,
-              child: minExtentProtoType,
-            ).animate().fadeIn(),
-          ],
-        ],
+        ),
       ),
     );
   }

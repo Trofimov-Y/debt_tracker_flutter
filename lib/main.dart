@@ -26,7 +26,7 @@ void main() async {
     return true;
   };
 
-  await GetIt.instance.init();
+  GetIt.instance.init();
 
   Bloc.observer = AppBlocObserver();
 

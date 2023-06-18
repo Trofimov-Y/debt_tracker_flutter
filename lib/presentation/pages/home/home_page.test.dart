@@ -95,6 +95,19 @@ final List<String> commonNames = [
   'Dorothy',
 ];
 
+final List<String> commonDebtDescriptions = [
+  'Dinner at restaurant',
+  'Loan for car repair',
+  'Borrowed for rent',
+  'Paid for concert tickets',
+  'Lent for medical expenses',
+  'Covered grocery expenses',
+  'Borrowed for vacation',
+  'Paid for hotel stay',
+  'Lent for tuition fees',
+  'Covered utility bills',
+];
+
 final contacts = List.generate(
   10,
   (index) {
