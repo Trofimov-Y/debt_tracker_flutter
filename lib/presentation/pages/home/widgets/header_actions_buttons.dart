@@ -1,19 +1,20 @@
 import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 
 class HeaderActionsButtons extends StatelessWidget {
   const HeaderActionsButtons({
     super.key,
-    required this.onAddEntryPressed,
-    required this.onRemindPressed,
+    required this.onNewDebtPressed,
     required this.onAllEntriesPressed,
+    required this.onSettingsPressed,
   });
 
-  final VoidCallback onAddEntryPressed;
-  final VoidCallback onRemindPressed;
+  final VoidCallback onNewDebtPressed;
   final VoidCallback onAllEntriesPressed;
+  final VoidCallback onSettingsPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -22,25 +23,25 @@ class HeaderActionsButtons extends StatelessWidget {
       children: [
         Expanded(
           child: _HeaderButton(
-            icon: Icons.add,
-            onPressed: onAddEntryPressed,
-            text: S.of(context).addEntry,
+            icon: Icons.add_rounded,
+            onPressed: onNewDebtPressed,
+            text: S.of(context).newDebt,
           ),
         ),
         const Gap(28),
         Expanded(
           child: _HeaderButton(
-            icon: Icons.notifications,
-            onPressed: onRemindPressed,
-            text: S.of(context).remind,
-          ),
-        ),
-        const Gap(28),
-        Expanded(
-          child: _HeaderButton(
-            icon: Icons.notes,
+            icon: Icons.layers_rounded,
             onPressed: onAllEntriesPressed,
-            text: S.of(context).allEntries,
+            text: S.of(context).allDebts,
+          ),
+        ),
+        const Gap(28),
+        Expanded(
+          child: _HeaderButton(
+            icon: FontAwesomeIcons.gear,
+            onPressed: onSettingsPressed,
+            text: S.of(context).settings,
           ),
         ),
       ],
@@ -69,7 +70,7 @@ class _HeaderButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(64),
           ),
           child: IconButton(
-            icon: Icon(icon, color: context.colors.primary, size: 32),
+            icon: FaIcon(icon, color: context.colors.primary, size: 32),
             onPressed: onPressed,
           ),
         ),
