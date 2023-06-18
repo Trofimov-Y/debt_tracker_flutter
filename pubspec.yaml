@@ -39,11 +39,11 @@ dependencies:
   freezed_annotation: 2.2.0
   auto_mappr_annotation: 1.1.0
   gap: 3.0.0
-  flutter_svg: 2.0.6
+  flutter_svg: 2.0.7
   flutter_keyboard_visibility: ^5.4.1
 
   # Networking
-  dio: 5.2.0
+  dio: 5.2.1+1
   retrofit: 4.0.1
   json_annotation: 4.8.1
 
@@ -54,9 +54,10 @@ dependencies:
   lottie: 2.4.0
 
   # Firebase
-  firebase_core: 2.13.1
-  firebase_crashlytics: 3.3.2
-  firebase_auth: 4.6.2
+  firebase_core: 2.14.0
+  firebase_crashlytics: 3.3.3
+  firebase_auth: 4.6.3
+  google_sign_in: 6.1.4
 
   # Testing
   mockito: 5.4.2
