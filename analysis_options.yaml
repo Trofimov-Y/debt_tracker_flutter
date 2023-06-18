@@ -16,3 +16,4 @@ linter:
     sort_pub_dependencies: false
     sort_constructors_first: true
     prefer_single_quotes: true
+    depend_on_referenced_packages: false
