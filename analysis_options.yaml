@@ -8,6 +8,7 @@ analyzer:
     - "**.freezed.dart"
     - "**.g.dart"
     - "**.config.dart"
+    - "*/generated"
 
 # You can customize the lint rules set to your own liking. A list of all rules
 # can be found at https://dart-lang.github.io/linter/lints/options/options.html
@@ -17,3 +18,4 @@ linter:
     sort_constructors_first: true
     prefer_single_quotes: true
     depend_on_referenced_packages: false
+    directives_ordering: false
