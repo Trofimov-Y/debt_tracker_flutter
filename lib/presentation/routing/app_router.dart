@@ -1,6 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:debt_tracker/presentation/pages/new_debt/new_debt_page.dart';
+// ignore: directives_ordering
 import 'package:debt_tracker/presentation/pages/entries/entries_page.dart';
+import 'package:debt_tracker/presentation/pages/debt_details/debt_details_page.dart';
 import 'package:debt_tracker/presentation/pages/home/home_page.dart';
+import 'package:debt_tracker/presentation/pages/settings/settings_page.dart';
 import 'package:debt_tracker/presentation/pages/start/start_page.dart';
 import 'package:debt_tracker/presentation/pages/welcome/welcome_page.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +24,12 @@ class AppRouter extends _$AppRouter {
 
   @override
   final List<AutoRoute> routes = [
-    AutoRoute(page: StartRoute.page, path: '/', initial: true),
+    CustomRoute(
+      page: StartRoute.page,
+      path: '/',
+      initial: true,
+      transitionsBuilder: TransitionsBuilders.fadeIn,
+    ),
     CustomRoute(
       page: WelcomeRoute.page,
       path: '/welcome',
@@ -32,5 +41,8 @@ class AppRouter extends _$AppRouter {
       transitionsBuilder: TransitionsBuilders.fadeIn,
     ),
     AutoRoute(page: EntriesRoute.page, path: '/entries'),
+    AutoRoute(page: NewDebtRoute.page, path: '/add-entry'),
+    AutoRoute(page: DebtDetailsRoute.page, path: '/entry-details'),
+    AutoRoute(page: SettingsRoute.page, path: '/settings'),
   ];
 }
