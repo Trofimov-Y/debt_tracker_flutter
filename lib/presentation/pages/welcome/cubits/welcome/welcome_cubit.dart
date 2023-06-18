@@ -18,24 +18,26 @@ class WelcomeCubit extends Cubit<WelcomeState> {
   final AppRouter _appRouter;
   final FirebaseAuth _firebaseAuth;
 
-  
-
   void onContinueWithGooglePressed() {
     state.mapOrNull(
       data: (_) async {
         emit(const WelcomeState.loading());
-        final googleSignIn = GoogleSignIn();
-        final crendational = await googleSignIn.signIn();
-        if (crendational != null) {
-          final googleAuth = await crendational.authentication;
-          final credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken,
-            idToken: googleAuth.idToken,
-          );
-          final result = await _firebaseAuth.signInWithCredential(credential);
-          if (result.user != null) {
-            _appRouter.replaceAll([const HomeRoute()]);
+        try {
+          final googleSignIn = GoogleSignIn();
+          final crendational = await googleSignIn.signIn();
+          if (crendational != null) {
+            final googleAuth = await crendational.authentication;
+            final credential = GoogleAuthProvider.credential(
+              accessToken: googleAuth.accessToken,
+              idToken: googleAuth.idToken,
+            );
+            final result = await _firebaseAuth.signInWithCredential(credential);
+            if (result.user != null) {
+              _appRouter.replaceAll([const HomeRoute()]);
+            }
           }
+        } catch (e) {
+          emit(const WelcomeState.data());
         }
       },
     );
@@ -45,9 +47,13 @@ class WelcomeCubit extends Cubit<WelcomeState> {
     state.mapOrNull(
       data: (_) async {
         emit(const WelcomeState.loading());
-        final result = await _firebaseAuth.signInAnonymously();
-        if (result.user != null) {
-          _appRouter.replaceAll([const HomeRoute()]);
+        try {
+          final result = await _firebaseAuth.signInAnonymously();
+          if (result.user != null) {
+            _appRouter.replaceAll([const HomeRoute()]);
+          }
+        } catch (e) {
+          emit(const WelcomeState.data());
         }
       },
     );

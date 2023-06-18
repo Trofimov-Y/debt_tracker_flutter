@@ -5,8 +5,6 @@ import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:debt_tracker/presentation/pages/welcome/cubits/welcome/welcome_cubit.dart';
-import 'package:debt_tracker/presentation/routing/app_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -56,7 +54,7 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                   ),
                   child: SingleChildScrollView(
                     padding: EdgeInsets.only(
-                      left: 40 ,
+                      left: 40,
                       right: 40,
                       top: 32,
                       bottom: context.mediaQuery.padding.bottom + 32,
@@ -86,21 +84,46 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                           ],
                         ),
                         const Gap(24),
-                        OutlinedButton(
-                          onPressed: cubit.onContinueWithGooglePressed,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(SvgAssets.googleIcon, width: 20, height: 20),
-                              const Gap(8),
-                              Flexible(child: Text(S.of(context).continueWithGoogle)),
-                            ],
-                          ),
-                        ),
-                        const Gap(16),
-                        TextButton(
-                          onPressed: cubit.onSignAsGuestPressed,
-                          child: Text(S.of(context).singAsGuest),
+                        BlocBuilder<WelcomeCubit, WelcomeState>(
+                          builder: (context, state) {
+                            return AnimatedCrossFade(
+                              firstChild: Column(
+                                children: [
+                                  OutlinedButton(
+                                    onPressed: cubit.onContinueWithGooglePressed,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          SvgAssets.googleIcon,
+                                          width: 20,
+                                          height: 20,
+                                        ),
+                                        const Gap(8),
+                                        Flexible(child: Text(S.of(context).continueWithGoogle)),
+                                      ],
+                                    ),
+                                  ),
+                                  const Gap(16),
+                                  TextButton(
+                                    onPressed: cubit.onSignAsGuestPressed,
+                                    child: Text(S.of(context).singAsGuest),
+                                  ),
+                                ],
+                              ),
+                              secondChild: const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 32),
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ),
+                              crossFadeState: state.map(
+                                data: (_) => CrossFadeState.showFirst,
+                                loading: (_) => CrossFadeState.showSecond,
+                              ),
+                              duration: const Duration(milliseconds: 300),
+                            );
+                          },
                         ),
                       ],
                     ),
