@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
+import 'package:debt_tracker/presentation/pages/home/home_page.test.dart';
+import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -24,7 +28,7 @@ class EntriesPage extends StatelessWidget implements AutoRouteWrapper {
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: SliverAppBar(
-                title: Text(S.of(context).entries),
+                title: Text(S.of(context).allDebts),
                 floating: true,
                 snap: true,
                 pinned: true,
@@ -59,23 +63,84 @@ class EntriesPage extends StatelessWidget implements AutoRouteWrapper {
                     SliverOverlapInjector(
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                     ),
-                    SliverFixedExtentList(
-                      itemExtent: 48.0,
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return ListTile(
-                            title: Text('Item $index'),
-                          );
-                        },
-                        childCount: 30,
-                      ),
+                    SliverList.builder(
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          contentPadding: const EdgeInsets.only(
+                            left: 24,
+                            top: 8,
+                            bottom: 8,
+                            right: 16,
+                          ),
+                          leading: CircleAvatar(
+                            radius: 28,
+                            backgroundImage: NetworkImage(
+                              'https://picsum.photos/seed/$index/48/48',
+                            ),
+                          ),
+                          title: Text(
+                            commonNames[Random().nextInt(commonNames.length)],
+                          ),
+                          trailing: Text(
+                            (-index * 1000.0).toStringAsFixed(2),
+                            style: context.textTheme.bodyLarge,
+                          ),
+                          onTap: () {
+                            context.router.push(const DebtDetailsRoute());
+                          },
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (index.isOdd || index > 5) ...[
+                                Text(
+                                  commonDebtDescriptions[Random().nextInt(
+                                    commonDebtDescriptions.length,
+                                  )],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Borrowed: ',
+                                      style: context.textTheme.bodySmall?.copyWith(
+                                        color: context.colors.secondary,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: '18 Jun 2023',
+                                      style: context.textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (index.isEven) ...[
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Due: ',
+                                        style: context.textTheme.bodySmall?.copyWith(
+                                          color: context.colors.secondary,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '23 Jun 2023',
+                                        style: context.textTheme.bodySmall,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        );
+                      },
+                      itemCount: 10,
                     ),
-                    SliverToBoxAdapter(
-                      child: Container(
-                        color: context.colors.surface,
-                        height: context.mediaQuery.padding.bottom + 8,
-                      ),
-                    ),
+                    SliverGap(context.mediaQuery.padding.bottom)
                   ],
                 );
               },
@@ -84,8 +149,10 @@ class EntriesPage extends StatelessWidget implements AutoRouteWrapper {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Add New Item',
+        onPressed: () {
+          context.router.push(const NewDebtRoute());
+        },
+        tooltip: S.of(context).newDebt,
         child: const Icon(Icons.add),
       ),
     );
