@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '61107877767',
     projectId: 'debts-debt-tracker',
     storageBucket: 'debts-debt-tracker.appspot.com',
+    androidClientId: '61107877767-ko3saejlq6qagr7anv1n9ahdos1t0fmm.apps.googleusercontent.com',
     iosClientId: '61107877767-q3cv327ivgn9c9pbqfsdpdtab42lj0vn.apps.googleusercontent.com',
     iosBundleId: 'ua.debts.debtTracker',
   );
