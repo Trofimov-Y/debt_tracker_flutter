@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/presentation/pages/entries/entries_page.dart';
 import 'package:debt_tracker/presentation/pages/home/home_page.dart';
-import 'package:debt_tracker/presentation/pages/sing_in/sing_in_page.dart';
 import 'package:debt_tracker/presentation/pages/start/start_page.dart';
 import 'package:debt_tracker/presentation/pages/welcome/welcome_page.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,6 @@ class AppRouter extends _$AppRouter {
       path: '/home',
       transitionsBuilder: TransitionsBuilders.fadeIn,
     ),
-    AutoRoute(page: SignInRoute.page, path: '/sign_in'),
     AutoRoute(page: EntriesRoute.page, path: '/entries'),
   ];
 }

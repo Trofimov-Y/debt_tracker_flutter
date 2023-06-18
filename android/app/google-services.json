@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "61107877767-ko3saejlq6qagr7anv1n9ahdos1t0fmm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ua.debts.debt_tracker",
+            "certificate_hash": "8a8f18ccdc1d1d37d930abf48cf3bbace0fa146a"
+          }
+        },
+        {
           "client_id": "61107877767-0ndvks5nie0b3q8sgob5n8mtetvrltht.apps.googleusercontent.com",
           "client_type": 3
         }

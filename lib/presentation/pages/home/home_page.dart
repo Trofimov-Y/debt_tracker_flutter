@@ -12,6 +12,7 @@ import 'package:debt_tracker/presentation/pages/home/widgets/header_values.dart'
 import 'package:debt_tracker/presentation/pages/home/widgets/operation_list_tile.dart';
 import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:extended_sliver/extended_sliver.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -49,7 +50,10 @@ class HomePage extends StatelessWidget {
                       child: HeaderValues(currencySymbol: '\$', owedByMe: debt, owedToMe: owed),
                     ),
                     HeaderActionsButtons(
-                      onAddEntryPressed: () {},
+                      onAddEntryPressed: () {
+                        // TODO Remove test log out later
+                        FirebaseAuth.instance.signOut();
+                      },
                       onAllEntriesPressed: () {
                         context.router.push(const EntriesRoute());
                       },

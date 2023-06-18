@@ -1,11 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/core/assets/lottie_assets.dart';
+import 'package:debt_tracker/core/assets/svg_assets.dart';
 import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
+import 'package:debt_tracker/presentation/pages/welcome/cubits/welcome/welcome_cubit.dart';
 import 'package:debt_tracker/presentation/routing/app_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get_it/get_it.dart';
 import 'package:lottie/lottie.dart';
 
 @RoutePage()
@@ -14,11 +20,12 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return this;
+    return BlocProvider(create: (context) => GetIt.instance<WelcomeCubit>(), child: this);
   }
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<WelcomeCubit>();
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -49,51 +56,52 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                   ),
                   child: SingleChildScrollView(
                     padding: EdgeInsets.only(
-                      left: 56,
-                      right: 56,
+                      left: 40 ,
+                      right: 40,
                       top: 32,
-                      bottom: context.mediaQuery.padding.bottom + 16,
+                      bottom: context.mediaQuery.padding.bottom + 32,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
                           S.of(context).welcome,
-                          style: context.textTheme.titleLarge?.semiBold,
+                          style: context.textTheme.titleLarge?.medium,
                           textAlign: TextAlign.center,
                         ),
-                        const Gap(8),
+                        const Gap(12),
                         Wrap(
                           alignment: WrapAlignment.center,
                           children: [
                             Text(
-                              S.of(context).debtsAppName,
-                              style: context.textTheme.titleLarge?.medium.withColor(
+                              S.of(context).appName,
+                              style: context.textTheme.titleLarge?.withColor(
                                 context.colors.primary,
                               ),
                             ),
                             Text(
-                              ' - ${S.of(context).debtTrackerSubAppName}',
+                              ' - ${S.of(context).subAppName}',
                               style: context.textTheme.titleLarge,
                             ),
                           ],
                         ),
-                        const Gap(32),
-                        FilledButton(onPressed: () {}, child: Text(S.of(context).signUp)),
-                        const Gap(8),
-                        FilledButton.tonal(
-                          onPressed: () {
-                            context.router.push(const SignInRoute());
-                          },
-                          child: Text(S.of(context).haveAccount),
+                        const Gap(24),
+                        OutlinedButton(
+                          onPressed: cubit.onContinueWithGooglePressed,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(SvgAssets.googleIcon, width: 20, height: 20),
+                              const Gap(8),
+                              Flexible(child: Text(S.of(context).continueWithGoogle)),
+                            ],
+                          ),
                         ),
                         const Gap(16),
                         TextButton(
-                          onPressed: () {
-                            context.router.push(const HomeRoute());
-                          },
+                          onPressed: cubit.onSignAsGuestPressed,
                           child: Text(S.of(context).singAsGuest),
-                        )
+                        ),
                       ],
                     ),
                   ),
