@@ -1,7 +1,7 @@
 import 'package:debt_tracker/application.dart';
 import 'package:debt_tracker/core/di/injector.config.dart';
 import 'package:debt_tracker/core/environment.dart';
-import 'package:debt_tracker/presentation/bloc/app_bloc_observer.dart';
+import 'package:debt_tracker/presentation/bloc/observers/app_bloc_observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
