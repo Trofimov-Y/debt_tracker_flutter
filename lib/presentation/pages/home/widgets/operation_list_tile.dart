@@ -22,6 +22,7 @@ class OperationListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24),
       onTap: onTap,
       leading: CircleAvatar(
         radius: 24,
@@ -30,11 +31,11 @@ class OperationListTile extends StatelessWidget {
       subtitle: Text(type),
       trailing: Text(
         operationValue.toStringAsFixed(2),
-        style: context.textTheme.bodyLarge?.withColor(
+        style: context.textTheme.bodyLarge?.medium.withColor(
           operationValue.isNegative ? null : context.colors.primary,
         ),
       ),
-      title: Text(operationContactFullName),
+      title: Text(operationContactFullName, style: const TextStyle(fontWeight: FontWeight.w500)),
     );
   }
 }

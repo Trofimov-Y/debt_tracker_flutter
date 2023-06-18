@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
+import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:debt_tracker/presentation/pages/home/home_page.test.dart';
 import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:flutter/material.dart';
@@ -66,12 +67,7 @@ class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
                     SliverList.builder(
                       itemBuilder: (context, index) {
                         return ListTile(
-                          contentPadding: const EdgeInsets.only(
-                            left: 24,
-                            top: 8,
-                            bottom: 8,
-                            right: 16,
-                          ),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                           leading: CircleAvatar(
                             radius: 28,
                             backgroundImage: NetworkImage(
@@ -80,10 +76,11 @@ class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
                           ),
                           title: Text(
                             commonNames[Random().nextInt(commonNames.length)],
+                            style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
                           trailing: Text(
                             (-index * 1000.0).toStringAsFixed(2),
-                            style: context.textTheme.bodyLarge,
+                            style: context.textTheme.bodyLarge?.medium,
                           ),
                           onTap: () {
                             context.router.push(const DebtDetailsRoute());

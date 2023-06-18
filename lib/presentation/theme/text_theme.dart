@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const fontFamily = 'Poppins';
+const fontFamily = 'Montserrat';
 
 const textTheme = TextTheme(
   displayLarge: TextStyle(fontSize: 57, height: 1.12, fontWeight: FontWeight.normal),

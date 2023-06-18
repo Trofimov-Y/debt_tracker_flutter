@@ -30,7 +30,10 @@ class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
               onTap: () {},
               leading: const Icon(Icons.account_balance_wallet_outlined),
               contentPadding: const EdgeInsets.only(left: 28, right: 16),
-              title: Text(S.of(context).mainCurrency),
+              title: Text(
+                S.of(context).mainCurrency,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
               subtitle: Text(S.of(context).currencyForAllEntries),
             ),
           ),
@@ -41,7 +44,10 @@ class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
               },
               leading: const Icon(Icons.logout),
               contentPadding: const EdgeInsets.only(left: 28, right: 16),
-              title: Text(S.of(context).logOut),
+              title: Text(
+                S.of(context).logOut,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
               subtitle: Text(S.of(context).signingOutAccount),
             ),
           ),
@@ -54,7 +60,7 @@ class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
               contentPadding: const EdgeInsets.only(left: 28, right: 16),
               title: Text(
                 S.of(context).deleteAccount,
-                style: TextStyle(color: context.colors.error),
+                style: TextStyle(color: context.colors.error, fontWeight: FontWeight.w500),
               ),
               subtitle: Text(S.of(context).existingDataDeleted),
             ),
