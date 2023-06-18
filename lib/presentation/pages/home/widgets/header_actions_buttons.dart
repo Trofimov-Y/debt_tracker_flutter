@@ -1,5 +1,6 @@
 import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
+import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
@@ -22,26 +23,34 @@ class HeaderActionsButtons extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: _HeaderButton(
-            icon: Icons.add_rounded,
-            onPressed: onNewDebtPressed,
-            text: S.of(context).newDebt,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: _HeaderButton(
+              icon: Icons.add_rounded,
+              onPressed: onNewDebtPressed,
+              text: S.of(context).newDebt,
+            ),
           ),
         ),
-        const Gap(28),
+        const Gap(4),
         Expanded(
-          child: _HeaderButton(
-            icon: Icons.layers_rounded,
-            onPressed: onAllEntriesPressed,
-            text: S.of(context).allDebts,
+          child: Align(
+            child: _HeaderButton(
+              icon: Icons.layers_rounded,
+              onPressed: onAllEntriesPressed,
+              text: S.of(context).allDebts,
+            ),
           ),
         ),
-        const Gap(28),
+        const Gap(4),
         Expanded(
-          child: _HeaderButton(
-            icon: FontAwesomeIcons.gear,
-            onPressed: onSettingsPressed,
-            text: S.of(context).settings,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: _HeaderButton(
+              icon: FontAwesomeIcons.gear,
+              onPressed: onSettingsPressed,
+              text: S.of(context).settings,
+            ),
           ),
         ),
       ],
@@ -75,7 +84,7 @@ class _HeaderButton extends StatelessWidget {
           ),
         ),
         const Gap(8),
-        Text(text, style: context.textTheme.bodySmall, textAlign: TextAlign.center),
+        Text(text, style: context.textTheme.bodySmall?.medium, textAlign: TextAlign.center),
       ],
     );
   }

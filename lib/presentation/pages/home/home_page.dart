@@ -3,6 +3,7 @@ import 'package:dartx/dartx.dart';
 import 'package:debt_tracker/core/extensions/date_time_extensions.dart';
 import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
+import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:debt_tracker/presentation/pages/home/delegates/home_persistent_header_delegate.dart';
 import 'package:debt_tracker/presentation/pages/home/home_page.test.dart';
 import 'package:debt_tracker/presentation/pages/home/widgets/header_actions_buttons.dart';
@@ -13,6 +14,7 @@ import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:gap/gap.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 @RoutePage()
@@ -24,7 +26,7 @@ class HomePage extends StatelessWidget {
     final operationsByDay = getOperationsByDay(operations);
     return Scaffold(
       body: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverPinnedPersistentHeader(
             delegate: HomePersistentHeaderDelegate(
@@ -36,7 +38,7 @@ class HomePage extends StatelessWidget {
               ),
               maxExtentProtoType: Container(
                 height: 220 + context.mediaQuery.padding.top,
-                padding: const EdgeInsets.only(left: 32, right: 32, bottom: 20, top: 16),
+                padding: const EdgeInsets.only(left: 24, right: 24, bottom: 20, top: 16),
                 child: Column(
                   children: [
                     const Expanded(
@@ -80,9 +82,8 @@ class HomePage extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         date.isToday ? S.of(context).today : date.dMMMMFormat,
-                        style: context.textTheme.bodyMedium?.copyWith(
+                        style: context.textTheme.bodyMedium?.medium.copyWith(
                           color: context.colors.onSurface,
-                          fontWeight: state.isPinned ? FontWeight.w500 : FontWeight.w400,
                         ),
                       ),
                     );
@@ -104,12 +105,7 @@ class HomePage extends StatelessWidget {
               }),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              color: context.colors.surface,
-              height: context.mediaQuery.padding.bottom + 8,
-            ),
-          ),
+          SliverGap(context.mediaQuery.padding.bottom + 8),
         ],
       ),
     );
