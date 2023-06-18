@@ -13,6 +13,7 @@ import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:gap/gap.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 @RoutePage()
@@ -24,7 +25,7 @@ class HomePage extends StatelessWidget {
     final operationsByDay = getOperationsByDay(operations);
     return Scaffold(
       body: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverPinnedPersistentHeader(
             delegate: HomePersistentHeaderDelegate(
@@ -104,12 +105,7 @@ class HomePage extends StatelessWidget {
               }),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              color: context.colors.surface,
-              height: context.mediaQuery.padding.bottom + 8,
-            ),
-          ),
+          SliverGap(context.mediaQuery.padding.bottom + 8),
         ],
       ),
     );
