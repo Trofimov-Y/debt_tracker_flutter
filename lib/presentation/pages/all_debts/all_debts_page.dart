@@ -11,8 +11,8 @@ import 'package:gap/gap.dart';
 final tabs = ['Tab 1', 'Tab 2'];
 
 @RoutePage()
-class EntriesPage extends StatelessWidget implements AutoRouteWrapper {
-  const EntriesPage({super.key});
+class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
+  const AllDebtsPage({super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) {

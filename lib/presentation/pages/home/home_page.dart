@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
                         context.router.push(const NewDebtRoute());
                       },
                       onAllEntriesPressed: () {
-                        context.router.push(const EntriesRoute());
+                        context.router.push(const AllDebtsRoute());
                       },
                       onSettingsPressed: () {
                         context.router.push(const SettingsRoute());

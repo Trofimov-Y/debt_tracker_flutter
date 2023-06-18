@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/presentation/pages/new_debt/new_debt_page.dart';
-// ignore: directives_ordering
-import 'package:debt_tracker/presentation/pages/entries/entries_page.dart';
+import 'package:debt_tracker/presentation/pages/all_debts/all_debts_page.dart';
 import 'package:debt_tracker/presentation/pages/debt_details/debt_details_page.dart';
 import 'package:debt_tracker/presentation/pages/home/home_page.dart';
 import 'package:debt_tracker/presentation/pages/settings/settings_page.dart';
@@ -40,9 +39,9 @@ class AppRouter extends _$AppRouter {
       path: '/home',
       transitionsBuilder: TransitionsBuilders.fadeIn,
     ),
-    AutoRoute(page: EntriesRoute.page, path: '/entries'),
-    AutoRoute(page: NewDebtRoute.page, path: '/add-entry'),
-    AutoRoute(page: DebtDetailsRoute.page, path: '/entry-details'),
+    AutoRoute(page: AllDebtsRoute.page, path: '/debts'),
+    AutoRoute(page: NewDebtRoute.page, path: '/new-debt'),
+    AutoRoute(page: DebtDetailsRoute.page, path: '/debt-details'),
     AutoRoute(page: SettingsRoute.page, path: '/settings'),
   ];
 }
