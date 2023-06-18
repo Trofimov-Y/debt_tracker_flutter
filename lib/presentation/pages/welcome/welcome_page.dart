@@ -88,6 +88,7 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                           builder: (context, state) {
                             return AnimatedCrossFade(
                               firstChild: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   OutlinedButton(
                                     onPressed: cubit.onContinueWithGooglePressed,
