@@ -2,11 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:injectable/injectable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
 
-part 'welcome_state.dart';
 part 'welcome_cubit.freezed.dart';
+part 'welcome_state.dart';
 
 @Injectable()
 class WelcomeCubit extends Cubit<WelcomeState> {
