@@ -137,7 +137,7 @@ class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
                       },
                       itemCount: 10,
                     ),
-                    SliverGap(context.mediaQuery.padding.bottom)
+                    SliverGap(context.mediaQuery.padding.bottom + 8)
                   ],
                 );
               },
