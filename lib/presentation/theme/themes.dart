@@ -8,7 +8,7 @@ final theme = ThemeData(
   fontFamily: fontFamily,
   textTheme: textTheme,
   inputDecorationTheme: const InputDecorationTheme(
-    contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     filled: true,
   ),
   colorScheme: lightColorScheme,
@@ -21,7 +21,7 @@ final darkTheme = ThemeData(
   textTheme: textTheme,
   colorScheme: darkColorScheme,
   inputDecorationTheme: const InputDecorationTheme(
-    contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     filled: true,
   ),
 );
