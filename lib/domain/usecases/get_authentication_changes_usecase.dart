@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class GetAuthenticationChangesUseCase {
-  GetAuthenticationChangesUseCase(this._authenticationRepository);
+  const GetAuthenticationChangesUseCase(this._authenticationRepository);
 
   final AuthenticationRepository _authenticationRepository;
 

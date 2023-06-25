@@ -2,9 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/core/assets/lottie_assets.dart';
 import 'package:debt_tracker/core/assets/svg_assets.dart';
 import 'package:debt_tracker/generated/l10n.dart';
+import 'package:debt_tracker/presentation/errors/failure_localization_extension.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:debt_tracker/presentation/pages/welcome/cubits/welcome/welcome_cubit.dart';
+import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,7 +20,22 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider(create: (context) => GetIt.instance<WelcomeCubit>(), child: this);
+    return BlocProvider(
+      create: (context) => GetIt.instance<WelcomeCubit>(),
+      child: BlocListener<WelcomeCubit, WelcomeState>(
+        listener: (BuildContext context, state) {
+          state.mapOrNull(
+            success: (_) => context.router.replaceAll([const HomeRoute()]),
+            error: (state) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.failure.message(context))),
+              );
+            },
+          );
+        },
+        child: this,
+      ),
+    );
   }
 
   @override
@@ -118,8 +135,8 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                                   child: CircularProgressIndicator(),
                                 ),
                               ),
-                              crossFadeState: state.map(
-                                data: (_) => CrossFadeState.showFirst,
+                              crossFadeState: state.maybeMap(
+                                orElse: () => CrossFadeState.showFirst,
                                 loading: (_) => CrossFadeState.showSecond,
                               ),
                               duration: const Duration(milliseconds: 300),

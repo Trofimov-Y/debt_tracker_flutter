@@ -1,5 +1,5 @@
 class UserModel {
-  UserModel({
+  const UserModel({
     this.name,
     this.email,
     required this.isAnonymous,

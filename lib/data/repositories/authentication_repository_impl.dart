@@ -1,16 +1,21 @@
 import 'package:debt_tracker/data/datasources/remote/authentication_remote_datasource.dart';
 import 'package:debt_tracker/data/mappers/user_mapper.dart';
 import 'package:debt_tracker/domain/entities/user_entity.dart';
+import 'package:debt_tracker/domain/errors/failure.dart';
 import 'package:debt_tracker/domain/repositories/authentication_repository.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 
 @Injectable(as: AuthenticationRepository)
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
-  AuthenticationRepositoryImpl(
+  const AuthenticationRepositoryImpl(
     this._authenticationRemoteDataSource,
     this._userMapper,
+    this._logger,
   );
 
+  final Logger _logger;
   final AuthenticationRemoteDataSource _authenticationRemoteDataSource;
   final UserMapper _userMapper;
 
@@ -19,5 +24,36 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     return _authenticationRemoteDataSource.getAuthenticationChanges().map(
           (model) => _userMapper.tryConvert(model),
         );
+  }
+
+  @override
+  Future<Either<Failure, void>> signInAnonymously() {
+    return TaskEither.tryCatch(
+      () => _authenticationRemoteDataSource.singInAnonymously(),
+      (error, stackTrace) {
+        _logger.w(error.toString(), error, stackTrace);
+        return GeneraFailure(
+          error: error.toString(),
+          stackTrace: stackTrace,
+        );
+      },
+    ).run();
+  }
+
+  @override
+  Future<Either<Failure, void>> singInWithGoogle({String? idToken, String? accessToken}) {
+    return TaskEither.tryCatch(
+      () => _authenticationRemoteDataSource.singInWithGoogle(
+        idToken: idToken,
+        accessToken: accessToken,
+      ),
+      (error, stackTrace) {
+        _logger.w(error.toString(), error, stackTrace);
+        return GeneraFailure(
+          error: error.toString(),
+          stackTrace: stackTrace,
+        );
+      },
+    ).run();
   }
 }

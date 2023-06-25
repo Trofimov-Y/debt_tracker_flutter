@@ -1,60 +1,83 @@
 import 'package:bloc/bloc.dart';
-import 'package:debt_tracker/presentation/routing/app_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:debt_tracker/domain/errors/failure.dart';
+import 'package:debt_tracker/domain/usecases/sign_in_anonymously_usecase.dart';
+import 'package:debt_tracker/domain/usecases/sign_in_with_google_usecase.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 
 part 'welcome_cubit.freezed.dart';
+
 part 'welcome_state.dart';
 
 @Injectable()
-class WelcomeCubit extends Cubit<WelcomeState> {
+final class WelcomeCubit extends Cubit<WelcomeState> {
   WelcomeCubit(
-    this._firebaseAuth,
-    this._appRouter,
-  ) : super(const WelcomeState.data());
+    this._signInWithGoogleUseCase,
+    this._signInAnonymouslyUseCase,
+    this._logger,
+  ) : super(const WelcomeState.initial());
 
-  final AppRouter _appRouter;
-  final FirebaseAuth _firebaseAuth;
+  final SignInWithGoogleUseCase _signInWithGoogleUseCase;
+  final SignInAnonymouslyUseCase _signInAnonymouslyUseCase;
 
-  void onContinueWithGooglePressed() {
-    state.mapOrNull(
-      data: (_) async {
-        emit(const WelcomeState.loading());
-        try {
-          final googleSignIn = GoogleSignIn();
-          final crendational = await googleSignIn.signIn();
-          if (crendational != null) {
-            final googleAuth = await crendational.authentication;
-            final credential = GoogleAuthProvider.credential(
-              accessToken: googleAuth.accessToken,
-              idToken: googleAuth.idToken,
+  final Logger _logger;
+
+  Future<void> onContinueWithGooglePressed() async {
+    if (state is _Loading) return;
+    emit(const WelcomeState.loading());
+
+    final task = TaskEither<Failure, GoogleSignInAccount>.tryCatch(
+      () async {
+        final googleSignIn = GoogleSignIn();
+        final account = await googleSignIn.signIn();
+        if (account == null) throw Exception();
+        return account;
+      },
+      (error, stackTrace) {
+        _logger.w(error.toString(), error, stackTrace);
+        return const GoogleSignInFailedFailure();
+      },
+    ).flatMap(
+      (account) {
+        return TaskEither<Failure, GoogleSignInAuthentication>.tryCatch(
+          () => account.authentication,
+          (error, stackTrace) {
+            _logger.w(error.toString(), error, stackTrace);
+            return const GoogleSignInAccountNotFoundFailure();
+          },
+        ).flatMap(
+          (auth) {
+            return TaskEither<Failure, void>(
+              () => _signInWithGoogleUseCase(idToken: auth.idToken, accessToken: auth.accessToken),
             );
-            final result = await _firebaseAuth.signInWithCredential(credential);
-            if (result.user != null) {
-              _appRouter.replaceAll([const HomeRoute()]);
-            }
-          }
-        } catch (e) {
-          emit(const WelcomeState.data());
-        }
+          },
+        );
+      },
+    );
+
+    task.run().then(
+      (result) {
+        result.fold(
+          (failure) => emit(WelcomeState.error(failure)),
+          (_) => emit(const WelcomeState.success()),
+        );
       },
     );
   }
 
   void onSignAsGuestPressed() {
-    state.mapOrNull(
-      data: (_) async {
-        emit(const WelcomeState.loading());
-        try {
-          final result = await _firebaseAuth.signInAnonymously();
-          if (result.user != null) {
-            _appRouter.replaceAll([const HomeRoute()]);
-          }
-        } catch (e) {
-          emit(const WelcomeState.data());
-        }
+    if (state is _Loading) return;
+
+    emit(const WelcomeState.loading());
+    _signInAnonymouslyUseCase().then(
+      (result) {
+        result.fold(
+          (failure) => emit(WelcomeState.error(failure)),
+          (_) => emit(const WelcomeState.success()),
+        );
       },
     );
   }
