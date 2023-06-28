@@ -6,4 +6,6 @@ extension DateTimeExtensions on DateTime {
   String get dMMMMFormat => DateFormat('d MMMM').format(this);
 
   String get EEEddMMMYFormat => DateFormat('EEE, dd MMM, y').format(this);
+
+  String get EEEddMMMFormat => DateFormat('EEE, dd MMM').format(this);
 }
