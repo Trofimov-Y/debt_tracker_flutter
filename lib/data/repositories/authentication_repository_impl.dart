@@ -1,5 +1,6 @@
 import 'package:debt_tracker/data/datasources/remote/authentication_remote_datasource.dart';
 import 'package:debt_tracker/data/mappers/user_mapper.dart';
+import 'package:debt_tracker/data/models/user_model.dart';
 import 'package:debt_tracker/domain/entities/user_entity.dart';
 import 'package:debt_tracker/domain/errors/failure.dart';
 import 'package:debt_tracker/domain/repositories/authentication_repository.dart';
@@ -22,8 +23,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Stream<UserEntity?> getAuthenticationChanges() {
     return _authenticationRemoteDataSource.getAuthenticationChanges().map(
-          (model) => _userMapper.tryConvert(model),
-        );
+      (model) {
+        return _userMapper.tryConvert<UserModel, UserEntity>(model);
+      },
+    );
   }
 
   @override
@@ -32,10 +35,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       () => _authenticationRemoteDataSource.singInAnonymously(),
       (error, stackTrace) {
         _logger.w(error.toString(), error, stackTrace);
-        return GeneraFailure(
-          error: error.toString(),
-          stackTrace: stackTrace,
-        );
+        return GeneraFailure(error: error.toString(), stackTrace: stackTrace);
       },
     ).run();
   }
@@ -49,10 +49,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       ),
       (error, stackTrace) {
         _logger.w(error.toString(), error, stackTrace);
-        return GeneraFailure(
-          error: error.toString(),
-          stackTrace: stackTrace,
-        );
+        return GeneraFailure(error: error.toString(), stackTrace: stackTrace);
       },
     ).run();
   }

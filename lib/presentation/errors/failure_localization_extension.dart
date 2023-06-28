@@ -8,6 +8,8 @@ extension PresentationFailureExtension on Failure {
       GoogleSignInFailedFailure() => S.of(context).googleSignInFailedFailure,
       GoogleSignInAccountNotFoundFailure() => S.of(context).googleSignInAccountNotFoundFailure,
       GeneraFailure() => S.of(context).generaFailure,
+      DebtsCanceledConnectionFailure() => S.of(context).generaFailure,
+      DebtsConnectionFailure() => S.of(context).generaFailure,
     };
   }
 }

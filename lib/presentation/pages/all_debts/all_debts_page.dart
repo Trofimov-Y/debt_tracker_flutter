@@ -1,15 +1,20 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
+import 'package:debt_tracker/core/extensions/date_time_extensions.dart';
+import 'package:debt_tracker/domain/entities/debt_entity.dart';
 import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
-import 'package:debt_tracker/presentation/pages/home/home_page.test.dart';
+import 'package:debt_tracker/presentation/pages/all_debts/cubit/all_debts_cubit.dart';
 import 'package:debt_tracker/presentation/routing/app_router.dart';
+import 'package:debt_tracker/presentation/widgets/empty/empty_state_widget.dart';
+import 'package:debt_tracker/presentation/widgets/errors/error_state_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:get_it/get_it.dart';
 
-final tabs = ['Tab 1', 'Tab 2'];
+part 'widgets/debts_tab_list.dart';
 
 @RoutePage()
 class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
@@ -17,133 +22,87 @@ class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return DefaultTabController(length: 2, child: this);
+    return BlocProvider(
+      create: (context) => GetIt.instance.get<AllDebtsCubit>(),
+      child: DefaultTabController(length: 2, child: this),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AllDebtsCubit>();
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            SliverOverlapAbsorber(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              sliver: SliverAppBar(
-                title: Text(S.of(context).allDebts),
-                floating: true,
-                snap: true,
-                pinned: true,
-                actions: [
-                  IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.more_vert),
-                    onPressed: () {},
-                  ),
-                ],
-                forceElevated: innerBoxIsScrolled,
-                bottom: TabBar(
-                  tabs: [
-                    Tab(text: S.of(context).owedToMe),
-                    Tab(text: S.of(context).owedByMe),
-                  ],
-                ),
-              ),
-            ),
-          ];
-        },
-        body: TabBarView(
-          children: tabs.map((name) {
-            return Builder(
-              builder: (context) {
-                return CustomScrollView(
-                  key: PageStorageKey<String>(name),
-                  slivers: <Widget>[
-                    SliverOverlapInjector(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                    ),
-                    SliverList.builder(
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                          leading: CircleAvatar(
-                            radius: 28,
-                            backgroundImage: NetworkImage(
-                              'https://picsum.photos/seed/$index/48/48',
-                            ),
-                          ),
-                          title: Text(
-                            commonNames[Random().nextInt(commonNames.length)],
-                            style: const TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          trailing: Text(
-                            (-index * 1000.0).toStringAsFixed(2),
-                            style: context.textTheme.bodyLarge?.medium,
-                          ),
-                          onTap: () {
-                            context.router.push(const DebtDetailsRoute());
+      body: BlocBuilder<AllDebtsCubit, AllDebtsState>(
+        builder: (context, state) {
+          return NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                SliverOverlapAbsorber(
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: SliverAppBar(
+                    title: Text(S.of(context).allDebts),
+                    floating: true,
+                    snap: true,
+                    pinned: true,
+                    actions: state.mapOrNull(
+                      success: (_) => [
+                        IconButton(
+                          icon: const Icon(Icons.search),
+                          onPressed: () {
+                            //TODO: implement search later
                           },
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (index.isOdd || index > 5) ...[
-                                Text(
-                                  commonDebtDescriptions[Random().nextInt(
-                                    commonDebtDescriptions.length,
-                                  )],
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Borrowed: ',
-                                      style: context.textTheme.bodySmall?.copyWith(
-                                        color: context.colors.secondary,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: '18 Jun 2023',
-                                      style: context.textTheme.bodySmall,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              if (index.isEven) ...[
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: 'Due: ',
-                                        style: context.textTheme.bodySmall?.copyWith(
-                                          color: context.colors.secondary,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: '23 Jun 2023',
-                                        style: context.textTheme.bodySmall,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        );
-                      },
-                      itemCount: 10,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.more_vert),
+                          onPressed: () {
+                            //TODO: implement more actions later
+                          },
+                        ),
+                      ],
                     ),
-                    SliverGap(context.mediaQuery.padding.bottom + 8)
-                  ],
+                    forceElevated: innerBoxIsScrolled,
+                    bottom: state.mapOrNull(
+                      success: (_) => TabBar(
+                        tabs: [
+                          Tab(text: S.of(context).owedToMe),
+                          Tab(text: S.of(context).owedByMe),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ];
+            },
+            body: Builder(
+              builder: (context) {
+                return state.when(
+                  initial: () => const Center(child: CircularProgressIndicator()),
+                  error: (_) => Center(
+                    child: ErrorStateWidget(
+                      onRetryPressed: cubit.onRetryPressed,
+                    ).animate().fadeIn(),
+                  ),
+                  success: (toMeDebts, owedByMeDebts) {
+                    return TabBarView(
+                      children: [
+                        _DebtsTabList(
+                          pageStorageKey: const PageStorageKey('toMe'),
+                          debts: toMeDebts,
+                          onTileTap: (String debtId) {},
+                        ),
+                        _DebtsTabList(
+                          pageStorageKey: const PageStorageKey('owedByMe'),
+                          debts: owedByMeDebts,
+                          onTileTap: (String debtId) {},
+                        ),
+                      ],
+                    ).animate().fadeIn();
+                  },
                 );
               },
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

@@ -21,10 +21,6 @@ final class AuthenticationRemoteDataSourceImpl implements AuthenticationRemoteDa
   final FirebaseAuth _firebaseAuthInstance;
   final FirebaseFirestore _firestore;
 
-  String getAuthenticationUid() {
-    return _firebaseAuthInstance.currentUser!.uid;
-  }
-
   @override
   Stream<UserModel?> getAuthenticationChanges() {
     return _firebaseAuthInstance.authStateChanges().map((user) {
