@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:currency_picker/currency_picker.dart';
 import 'package:dartx/dartx.dart';
+import 'package:debt_tracker/core/extensions/bool_extensions.dart';
 import 'package:debt_tracker/core/extensions/date_time_extensions.dart';
 import 'package:debt_tracker/core/extensions/string_extensions.dart';
 import 'package:debt_tracker/domain/entities/debt_entity.dart';
@@ -7,6 +9,7 @@ import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/pages/new_debt/cubit/new_debt_cubit.dart';
 import 'package:debt_tracker/presentation/validation/text_fields_validators.dart';
+import 'package:debt_tracker/presentation/validation/text_input_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,6 +39,8 @@ class _NewDebtPageState extends State<NewDebtPage> {
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
 
+  Currency? pickedCurrency;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +61,8 @@ class _NewDebtPageState extends State<NewDebtPage> {
                             name: _nameController.text,
                             description: _descriptionController.text,
                             amount: _amountController.text.toDouble(),
+                            currencyCode: pickedCurrency?.code ?? 'USD',
+                            currencySymbol: pickedCurrency?.symbol ?? '\$',
                           );
                         }
                       },
@@ -100,25 +107,37 @@ class _NewDebtPageState extends State<NewDebtPage> {
                         TextFormField(
                           enabled: state.mapOrNull(loading: (_) => false),
                           decoration: InputDecoration(labelText: S.of(context).name),
-                          textInputAction: TextInputAction.next,
                           controller: _nameController,
                           validator: nameValidator(S.of(context).cantBeEmpty),
                         ),
                         const Gap(32),
                         TextFormField(
                           enabled: state.mapOrNull(loading: (_) => false),
-                          decoration: InputDecoration(labelText: S.of(context).amount),
+                          decoration: InputDecoration(
+                            labelText: S.of(context).amount,
+                            suffixIcon: IconButton(
+                              focusNode: FocusNode(skipTraversal: true),
+                              onPressed: () {
+                                showConfiguredCurrencyPicker(context);
+                              },
+                              icon: (pickedCurrency == null).when(
+                                () => const Icon(Icons.arrow_drop_down),
+                                () => Text(
+                                  pickedCurrency!.code,
+                                  style: context.textTheme.titleMedium,
+                                ),
+                              ),
+                            ),
+                          ),
                           textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.number,
-
-                          inputFormatters: [
-                            //TODO Add decimal formatter
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          inputFormatters: const [DecimalTextInputFormatter()],
                           controller: _amountController,
-                          validator: amountValidator(
-                            S.of(context).cantBeEmpty,
-                            S.of(context).mustBeGreaterThanZero,
+                          validator: currencyAmountValidator(
+                            emptyErrorText: S.of(context).cantBeEmpty,
+                            lessThanZeroErrorText: S.of(context).mustBeGreaterThanZero,
+                            currencyNotSelectedErrorText: 'Currency not selected',
+                            currencyCode: pickedCurrency?.code,
                           ),
                         ),
                         const Gap(32),
@@ -191,6 +210,32 @@ class _NewDebtPageState extends State<NewDebtPage> {
           );
         },
       ),
+    );
+  }
+
+  void showConfiguredCurrencyPicker(BuildContext context) {
+    return showCurrencyPicker(
+      context: context,
+      showSearchField: false,
+      physics: const BouncingScrollPhysics(),
+      onSelect: (Currency currency) {
+        setState(() {
+          pickedCurrency = currency;
+        });
+      },
+      currencyFilter: <String>[
+        'EUR',
+        'GBP',
+        'USD',
+        'AUD',
+        'CAD',
+        'JPY',
+        'HKD',
+        'CHF',
+        'SEK',
+        'ILS',
+        'UAH',
+      ],
     );
   }
 }

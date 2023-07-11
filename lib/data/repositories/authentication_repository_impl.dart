@@ -30,17 +30,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, void>> signInAnonymously() {
-    return TaskEither.tryCatch(
-      () => _authenticationRemoteDataSource.singInAnonymously(),
-      (error, stackTrace) {
-        _logger.w(error.toString(), error, stackTrace);
-        return GeneraFailure(error: error.toString(), stackTrace: stackTrace);
-      },
-    ).run();
-  }
-
-  @override
   Future<Either<Failure, void>> singInWithGoogle({String? idToken, String? accessToken}) {
     return TaskEither.tryCatch(
       () => _authenticationRemoteDataSource.singInWithGoogle(
@@ -49,6 +38,36 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       ),
       (error, stackTrace) {
         _logger.w(error.toString(), error, stackTrace);
+        return GeneraFailure(error: error.toString(), stackTrace: stackTrace);
+      },
+    ).run();
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteProfile() {
+    final result = TaskEither.tryCatch(() {
+      return _authenticationRemoteDataSource.deleteUserData();
+    }, (error, stackTrace) {
+      _logger.e(error.toString(), error, stackTrace);
+      return GeneraFailure(error: error.toString(), stackTrace: stackTrace);
+    }).flatMap(
+      (_) => TaskEither.tryCatch(
+        () => _authenticationRemoteDataSource.deleteProfile(),
+        (error, stackTrace) {
+          _logger.e(error.toString(), error, stackTrace);
+          return GeneraFailure(error: error.toString(), stackTrace: stackTrace);
+        },
+      ),
+    );
+    return result.run();
+  }
+
+  @override
+  Future<Either<Failure, void>> signOut() {
+    return TaskEither.tryCatch(
+      () => _authenticationRemoteDataSource.signOut(),
+      (error, stackTrace) {
+        _logger.e(error.toString(), error, stackTrace);
         return GeneraFailure(error: error.toString(), stackTrace: stackTrace);
       },
     ).run();

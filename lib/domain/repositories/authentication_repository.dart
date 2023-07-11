@@ -5,7 +5,9 @@ import 'package:fpdart/fpdart.dart';
 abstract interface class AuthenticationRepository {
   Stream<UserEntity?> getAuthenticationChanges();
 
-  Future<Either<Failure, void>> signInAnonymously();
-
   Future<Either<Failure, void>> singInWithGoogle({String? idToken, String? accessToken});
+
+  Future<Either<Failure, void>> signOut();
+
+  Future<Either<Failure, void>> deleteProfile();
 }

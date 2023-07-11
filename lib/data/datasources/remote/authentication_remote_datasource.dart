@@ -1,12 +1,19 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:debt_tracker/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
 
 abstract interface class AuthenticationRemoteDataSource {
   Stream<UserModel?> getAuthenticationChanges();
 
-  Future<void> singInAnonymously();
+  Future<void> signOut();
+
+  Future<void> deleteUserData();
+
+  Future<void> deleteProfile();
 
   Future<void> singInWithGoogle({String? idToken, String? accessToken});
 }
@@ -14,30 +21,22 @@ abstract interface class AuthenticationRemoteDataSource {
 @Injectable(as: AuthenticationRemoteDataSource)
 final class AuthenticationRemoteDataSourceImpl implements AuthenticationRemoteDataSource {
   const AuthenticationRemoteDataSourceImpl(
-    this._firebaseAuthInstance,
+    this._auth,
     this._firestore,
   );
 
-  final FirebaseAuth _firebaseAuthInstance;
+  final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
 
   @override
   Stream<UserModel?> getAuthenticationChanges() {
-    return _firebaseAuthInstance.authStateChanges().map((user) {
+    return _auth.authStateChanges().map((user) {
       if (user == null) return null;
       return UserModel(
-        email: user.email,
-        name: user.displayName,
-        isAnonymous: user.isAnonymous,
+        email: user.email!,
+        name: user.displayName!,
       );
     });
-  }
-
-  @override
-  Future<void> singInAnonymously() async {
-    final firebaseUserCredential = await _firebaseAuthInstance.signInAnonymously();
-
-    _createUserFromCredential(firebaseUserCredential);
   }
 
   @override
@@ -47,7 +46,7 @@ final class AuthenticationRemoteDataSourceImpl implements AuthenticationRemoteDa
       idToken: idToken,
     );
 
-    final userCredential = await _firebaseAuthInstance.signInWithCredential(googleCredential);
+    final userCredential = await _auth.signInWithCredential(googleCredential);
 
     await _createUserFromCredential(userCredential);
   }
@@ -57,10 +56,26 @@ final class AuthenticationRemoteDataSourceImpl implements AuthenticationRemoteDa
 
     if (reference.exists) return;
 
+    final format = NumberFormat.simpleCurrency(locale: Platform.localeName);
+
     await _firestore.collection('users').doc(userCredential.user!.uid).set({
       'name': userCredential.user!.displayName,
       'email': userCredential.user!.email,
-      'isAnonymous': userCredential.user!.isAnonymous,
+
+      'summaryEnabled': true,
+      // TODO Maybe find a better way to get the currency name
+      'summaryCurrencyCode': format.currencyName ?? 'USD',
     });
   }
+
+  @override
+  Future<void> deleteUserData() {
+    return _firestore.collection('users').doc(_auth.currentUser!.uid).delete();
+  }
+
+  @override
+  Future<void> signOut() => _auth.signOut();
+
+  @override
+  Future<void> deleteProfile() => _auth.currentUser!.delete();
 }

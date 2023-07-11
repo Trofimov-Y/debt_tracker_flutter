@@ -14,6 +14,10 @@ class _DebtsTabList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      physics: debts.isEmpty.when(
+        () => const NeverScrollableScrollPhysics(),
+        () => const BouncingScrollPhysics(),
+      ),
       key: pageStorageKey,
       slivers: <Widget>[
         SliverOverlapInjector(
@@ -40,7 +44,7 @@ class _DebtsTabList extends StatelessWidget {
           },
           itemCount: debts.length,
         ),
-        SliverGap(context.padding.bottom + 88)
+        SliverGap(context.padding.bottom + 8)
       ],
     );
   }
@@ -58,14 +62,27 @@ class _DebtListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       leading: CircleAvatar(
         radius: 28,
         backgroundImage: debt.avatarUrl == null ? null : NetworkImage(debt.avatarUrl!),
         child: debt.avatarUrl == null ? const Icon(Icons.person, size: 28) : null,
       ),
-      title: Text(debt.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-      trailing: Text(debt.amount.toStringAsFixed(2), style: context.textTheme.bodyLarge?.medium),
+      title: Text(
+        debt.name,
+        style: const TextStyle(fontWeight: FontWeight.w600),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      trailing: Text(
+        '${debt.amount.toStringAsFixed(2)} ${NumberFormat.simpleCurrency(
+          name: debt.currencyCode,
+        ).currencySymbol}',
+        style: context.textTheme.bodyLarge?.medium,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       onTap: () => onTap(debt.id!),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,6 +109,8 @@ class _DebtListTile extends StatelessWidget {
                 ),
               ],
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           if (debt.dueDate != null) ...[
             RichText(
@@ -109,6 +128,8 @@ class _DebtListTile extends StatelessWidget {
                   ),
                 ],
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ],
