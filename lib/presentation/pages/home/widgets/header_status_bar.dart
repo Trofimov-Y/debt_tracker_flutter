@@ -12,6 +12,9 @@ class HeaderStatusBar extends StatelessWidget {
     this.decimalPlaces = 2,
   });
 
+
+
+
   final double owedByMe;
   final double owedToMe;
 
