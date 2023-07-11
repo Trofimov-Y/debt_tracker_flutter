@@ -39,7 +39,7 @@ class _DebtsTabList extends StatelessWidget {
             final debt = debts[index];
             return _DebtListTile(
               debt: debt,
-              onTap: (String id) {},
+              onTap: onTileTap,
             );
           },
           itemCount: debts.length,
@@ -62,15 +62,9 @@ class _DebtListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      leading: CircleAvatar(
-        radius: 28,
-        backgroundImage: debt.avatarUrl == null ? null : NetworkImage(debt.avatarUrl!),
-        child: debt.avatarUrl == null ? const Icon(Icons.person, size: 28) : null,
-      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
       title: Text(
-        debt.name,
+        debt.name.capitalize(),
         style: const TextStyle(fontWeight: FontWeight.w600),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -87,21 +81,12 @@ class _DebtListTile extends StatelessWidget {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (debt.description.isNotEmpty) ...[
-            Text(
-              debt.description,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
           RichText(
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: '${S.of(context).incurredDate}: ',
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: context.colors.secondary,
-                  ),
+                  text: 'Incurred: ',
+                  style: context.textTheme.bodySmall?.copyWith(color: context.colors.secondary),
                 ),
                 TextSpan(
                   text: debt.incurredDate.EEEddMMMFormat,
@@ -117,7 +102,7 @@ class _DebtListTile extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '${S.of(context).dueDate}: ',
+                    text: 'Due: ',
                     style: context.textTheme.bodySmall?.copyWith(
                       color: context.colors.secondary,
                     ),

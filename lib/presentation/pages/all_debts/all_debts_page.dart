@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dartx/dartx.dart';
 import 'package:debt_tracker/core/extensions/bool_extensions.dart';
 import 'package:debt_tracker/core/extensions/date_time_extensions.dart';
 import 'package:debt_tracker/domain/entities/debt_entity.dart';
@@ -121,12 +122,16 @@ class _AllDebtsPageState extends State<AllDebtsPage> {
                         _DebtsTabList(
                           pageStorageKey: const PageStorageKey('toMe'),
                           debts: toMeDebts,
-                          onTileTap: (String debtId) {},
+                          onTileTap: (String debtId) {
+                            context.router.push(DebtDetailsRoute(debtId: debtId));
+                          },
                         ),
                         _DebtsTabList(
                           pageStorageKey: const PageStorageKey('owedByMe'),
                           debts: owedByMeDebts,
-                          onTileTap: (String debtId) {},
+                          onTileTap: (String debtId) {
+                            context.router.push(DebtDetailsRoute(debtId: debtId));
+                          },
                         ),
                       ],
                     ).animate().fadeIn();
