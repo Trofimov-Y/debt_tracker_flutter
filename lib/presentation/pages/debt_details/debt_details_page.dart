@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 @RoutePage()
 class DebtDetailsPage extends StatelessWidget implements AutoRouteWrapper {
-  const DebtDetailsPage({super.key});
+  const DebtDetailsPage({super.key, required this.debtId});
+
+  final String debtId;
 
   @override
   Widget wrappedRoute(BuildContext context) {

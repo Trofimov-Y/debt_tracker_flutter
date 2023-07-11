@@ -36,6 +36,7 @@ class NewDebtCubit extends Cubit<NewDebtState> {
     required String name,
     required String description,
     required double amount,
+    required String currencyCode,
   }) async {
     emit(
       NewDebtState.loading(
@@ -44,17 +45,17 @@ class NewDebtCubit extends Cubit<NewDebtState> {
         dueDate: state.dueDate,
       ),
     );
+
     final result = await _createDebtUseCase(
       DebtEntity(
+        id: null,
         name: name,
         description: description,
         amount: amount,
         incurredDate: state.incurredDate,
         dueDate: state.dueDate,
         type: state.type,
-
-        //TODO: Implement avatar later (Second scope)
-        avatarUrl: null,
+        currencyCode: currencyCode,
       ),
     );
     result.fold(

@@ -1,11 +1,9 @@
 class UserModel {
   const UserModel({
-    this.name,
-    this.email,
-    required this.isAnonymous,
+    required this.name,
+    required this.email,
   });
 
-  final String? name;
-  final String? email;
-  final bool isAnonymous;
+  final String name;
+  final String email;
 }

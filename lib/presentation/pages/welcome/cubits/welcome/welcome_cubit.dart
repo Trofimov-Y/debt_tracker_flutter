@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:debt_tracker/domain/errors/failure.dart';
-import 'package:debt_tracker/domain/usecases/sign_in_anonymously_usecase.dart';
 import 'package:debt_tracker/domain/usecases/sign_in_with_google_usecase.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,12 +15,10 @@ part 'welcome_state.dart';
 final class WelcomeCubit extends Cubit<WelcomeState> {
   WelcomeCubit(
     this._signInWithGoogleUseCase,
-    this._signInAnonymouslyUseCase,
     this._logger,
   ) : super(const WelcomeState.initial());
 
   final SignInWithGoogleUseCase _signInWithGoogleUseCase;
-  final SignInAnonymouslyUseCase _signInAnonymouslyUseCase;
 
   final Logger _logger;
 
@@ -59,20 +56,6 @@ final class WelcomeCubit extends Cubit<WelcomeState> {
     );
 
     task.run().then(
-      (result) {
-        result.fold(
-          (failure) => emit(WelcomeState.error(failure)),
-          (_) => emit(const WelcomeState.success()),
-        );
-      },
-    );
-  }
-
-  void onSignAsGuestPressed() {
-    if (state is _Loading) return;
-
-    emit(const WelcomeState.loading());
-    _signInAnonymouslyUseCase().then(
       (result) {
         result.fold(
           (failure) => emit(WelcomeState.error(failure)),

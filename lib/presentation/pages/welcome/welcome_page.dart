@@ -104,30 +104,20 @@ class WelcomePage extends StatelessWidget implements AutoRouteWrapper {
                         BlocBuilder<WelcomeCubit, WelcomeState>(
                           builder: (context, state) {
                             return AnimatedCrossFade(
-                              firstChild: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  OutlinedButton(
-                                    onPressed: cubit.onContinueWithGooglePressed,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          SvgAssets.googleIcon,
-                                          width: 20,
-                                          height: 20,
-                                        ),
-                                        const Gap(8),
-                                        Flexible(child: Text(S.of(context).continueWithGoogle)),
-                                      ],
+                              firstChild: OutlinedButton(
+                                onPressed: cubit.onContinueWithGooglePressed,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      SvgAssets.googleIcon,
+                                      width: 20,
+                                      height: 20,
                                     ),
-                                  ),
-                                  const Gap(16),
-                                  TextButton(
-                                    onPressed: cubit.onSignAsGuestPressed,
-                                    child: Text(S.of(context).singAsGuest),
-                                  ),
-                                ],
+                                    const Gap(8),
+                                    Flexible(child: Text(S.of(context).continueWithGoogle)),
+                                  ],
+                                ),
                               ),
                               secondChild: const Center(
                                 child: Padding(

@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dartx/dartx.dart';
+import 'package:debt_tracker/core/extensions/bool_extensions.dart';
 import 'package:debt_tracker/core/extensions/date_time_extensions.dart';
 import 'package:debt_tracker/domain/entities/debt_entity.dart';
 import 'package:debt_tracker/generated/l10n.dart';
@@ -9,15 +11,17 @@ import 'package:debt_tracker/presentation/routing/app_router.dart';
 import 'package:debt_tracker/presentation/widgets/empty/empty_state_widget.dart';
 import 'package:debt_tracker/presentation/widgets/errors/error_state_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 part 'widgets/debts_tab_list.dart';
 
 @RoutePage()
-class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
+class AllDebtsPage extends StatefulWidget implements AutoRouteWrapper {
   const AllDebtsPage({super.key});
 
   @override
@@ -29,13 +33,59 @@ class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
   }
 
   @override
+  State<AllDebtsPage> createState() => _AllDebtsPageState();
+}
+
+class _AllDebtsPageState extends State<AllDebtsPage> {
+  late final ScrollController _scrollController;
+
+  bool _canShowFab = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_listen);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_listen);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _listen() {
+    final ScrollDirection direction = _scrollController.position.userScrollDirection;
+    if (direction == ScrollDirection.forward) {
+      _showFab();
+    } else if (direction == ScrollDirection.reverse) {
+      _hideFab();
+    }
+  }
+
+  void _showFab() {
+    if (!_canShowFab) {
+      setState(() => _canShowFab = true);
+    }
+  }
+
+  void _hideFab() {
+    if (_canShowFab) {
+      setState(() => _canShowFab = false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final cubit = context.read<AllDebtsCubit>();
     return Scaffold(
       body: BlocBuilder<AllDebtsCubit, AllDebtsState>(
         builder: (context, state) {
           return NestedScrollView(
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            physics: const BouncingScrollPhysics(),
+            controller: _scrollController,
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverOverlapAbsorber(
                   handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
@@ -44,22 +94,6 @@ class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
                     floating: true,
                     snap: true,
                     pinned: true,
-                    actions: state.mapOrNull(
-                      success: (_) => [
-                        IconButton(
-                          icon: const Icon(Icons.search),
-                          onPressed: () {
-                            //TODO: implement search later
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.more_vert),
-                          onPressed: () {
-                            //TODO: implement more actions later
-                          },
-                        ),
-                      ],
-                    ),
                     forceElevated: innerBoxIsScrolled,
                     bottom: state.mapOrNull(
                       success: (_) => TabBar(
@@ -88,12 +122,16 @@ class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
                         _DebtsTabList(
                           pageStorageKey: const PageStorageKey('toMe'),
                           debts: toMeDebts,
-                          onTileTap: (String debtId) {},
+                          onTileTap: (String debtId) {
+                            context.router.push(DebtDetailsRoute(debtId: debtId));
+                          },
                         ),
                         _DebtsTabList(
                           pageStorageKey: const PageStorageKey('owedByMe'),
                           debts: owedByMeDebts,
-                          onTileTap: (String debtId) {},
+                          onTileTap: (String debtId) {
+                            context.router.push(DebtDetailsRoute(debtId: debtId));
+                          },
                         ),
                       ],
                     ).animate().fadeIn();
@@ -104,12 +142,13 @@ class AllDebtsPage extends StatelessWidget implements AutoRouteWrapper {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.router.push(const NewDebtRoute());
-        },
-        tooltip: S.of(context).newDebt,
-        child: const Icon(Icons.add),
+      floatingActionButton: _canShowFab.when(
+        () => FloatingActionButton(
+          onPressed: () => context.router.push(const NewDebtRoute()),
+          tooltip: S.of(context).newDebt,
+          child: const Icon(Icons.add),
+        ),
+        () => null,
       ),
     );
   }
