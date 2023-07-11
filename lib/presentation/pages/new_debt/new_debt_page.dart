@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:dartx/dartx.dart';
+import 'package:debt_tracker/core/config/available_currencies.dart';
 import 'package:debt_tracker/core/extensions/bool_extensions.dart';
 import 'package:debt_tracker/core/extensions/date_time_extensions.dart';
 import 'package:debt_tracker/core/extensions/string_extensions.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 @RoutePage()
 class NewDebtPage extends StatefulWidget implements AutoRouteWrapper {
@@ -61,8 +63,7 @@ class _NewDebtPageState extends State<NewDebtPage> {
                             name: _nameController.text,
                             description: _descriptionController.text,
                             amount: _amountController.text.toDouble(),
-                            currencyCode: pickedCurrency?.code ?? 'USD',
-                            currencySymbol: pickedCurrency?.symbol ?? '\$',
+                            currencyCode: pickedCurrency!.code,
                           );
                         }
                       },
@@ -91,7 +92,10 @@ class _NewDebtPageState extends State<NewDebtPage> {
                           onSelectionChanged: (value) => cubit.changeDebtType(value.first),
                           segments: [
                             ButtonSegment<DebtType>(
-                              enabled: state.maybeMap(loading: (_) => false, orElse: () => true),
+                              enabled: state.maybeMap(
+                                loading: (_) => false,
+                                orElse: () => true,
+                              ),
                               value: DebtType.toMe,
                               label: Text(S.of(context).owedToMe),
                             ),
@@ -118,7 +122,17 @@ class _NewDebtPageState extends State<NewDebtPage> {
                             suffixIcon: IconButton(
                               focusNode: FocusNode(skipTraversal: true),
                               onPressed: () {
-                                showConfiguredCurrencyPicker(context);
+                                showCurrencyPicker(
+                                  context: context,
+                                  showSearchField: false,
+                                  physics: const BouncingScrollPhysics(),
+                                  onSelect: (Currency currency) {
+                                    setState(() {
+                                      pickedCurrency = currency;
+                                    });
+                                  },
+                                  currencyFilter: availableCurrencies,
+                                );
                               },
                               icon: (pickedCurrency == null).when(
                                 () => const Icon(Icons.arrow_drop_down),
@@ -210,32 +224,6 @@ class _NewDebtPageState extends State<NewDebtPage> {
           );
         },
       ),
-    );
-  }
-
-  void showConfiguredCurrencyPicker(BuildContext context) {
-    return showCurrencyPicker(
-      context: context,
-      showSearchField: false,
-      physics: const BouncingScrollPhysics(),
-      onSelect: (Currency currency) {
-        setState(() {
-          pickedCurrency = currency;
-        });
-      },
-      currencyFilter: <String>[
-        'EUR',
-        'GBP',
-        'USD',
-        'AUD',
-        'CAD',
-        'JPY',
-        'HKD',
-        'CHF',
-        'SEK',
-        'ILS',
-        'UAH',
-      ],
     );
   }
 }
