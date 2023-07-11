@@ -4,12 +4,12 @@ import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class SignInAnonymouslyUseCase {
-  const SignInAnonymouslyUseCase(this._authenticationRepository);
+class SignOutUseCase {
+  const SignOutUseCase(this._authenticationRepository);
 
   final AuthenticationRepository _authenticationRepository;
 
   Future<Either<Failure, void>> call() {
-    return _authenticationRepository.signInAnonymously();
+    return _authenticationRepository.signOut();
   }
 }
