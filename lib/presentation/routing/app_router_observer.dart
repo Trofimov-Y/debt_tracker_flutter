@@ -29,7 +29,9 @@ class AppRouterObserver extends AutoRouterObserver {
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
-    _logger.d('Route replaced: from ${oldRoute?.settings.name} to ${newRoute?.settings.name}');
+    _logger.d(
+      'Route replaced: from ${oldRoute?.settings.name} to ${newRoute?.settings.name}',
+    );
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
   }
 
@@ -41,7 +43,9 @@ class AppRouterObserver extends AutoRouterObserver {
 
   @override
   void didChangeTabRoute(TabPageRoute route, TabPageRoute previousRoute) {
-    _logger.d('Tab route changed: from ${previousRoute.name} to ${route.name}');
+    _logger.d(
+      'Tab route changed: from ${previousRoute.name} to ${route.name}',
+    );
     super.didChangeTabRoute(route, previousRoute);
   }
 }

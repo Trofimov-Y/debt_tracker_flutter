@@ -3,6 +3,6 @@ import 'package:logger/logger.dart';
 
 @module
 abstract class LoggerModule {
-  @lazySingleton
-  Logger get loggerInstance => Logger(printer: PrettyPrinter());
+  @singleton
+  Logger get logger => Logger(printer: PrettyPrinter());
 }
