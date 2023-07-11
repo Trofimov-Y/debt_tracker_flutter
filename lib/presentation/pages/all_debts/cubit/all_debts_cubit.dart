@@ -6,7 +6,6 @@ import 'package:debt_tracker/domain/errors/failure.dart';
 import 'package:debt_tracker/domain/usecases/get_debts_changes_usecase.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 
 part 'all_debts_cubit.freezed.dart';
 
@@ -16,12 +15,10 @@ part 'all_debts_state.dart';
 class AllDebtsCubit extends Cubit<AllDebtsState> {
   AllDebtsCubit(
     this._getDebtsChangesUseCase,
-    this._logger,
   ) : super(const AllDebtsState.initial()) {
     _onCreate();
   }
 
-  final Logger _logger;
   final GetDebtsChangesUseCase _getDebtsChangesUseCase;
 
   StreamSubscription<List<DebtEntity>>? _debtsChangesSubscription;
@@ -44,8 +41,7 @@ class AllDebtsCubit extends Cubit<AllDebtsState> {
         );
       },
       onError: (error) {
-        _logger.e(error);
-        emit(const AllDebtsState.error(DebtsConnectionFailure()));
+        emit(const AllDebtsState.error(FailureWhenGettingDebts()));
       },
     );
   }

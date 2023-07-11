@@ -7,7 +7,6 @@ import 'package:debt_tracker/domain/usecases/get_debts_summary_chages_usecase.da
 import 'package:debt_tracker/domain/usecases/get_summary_status_changes_usecase.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 
 part 'debts_summary_cubit.freezed.dart';
 
@@ -17,13 +16,11 @@ part 'debts_summary_state.dart';
 class DebtsSummaryCubit extends Cubit<DebtsSummaryState> {
   DebtsSummaryCubit(
     this._getDebtsSummaryChangesUseCase,
-    this._logger,
     this._getSummaryStatusChangesUseCase,
   ) : super(const DebtsSummaryState.initial()) {
     _onCreate();
   }
 
-  final Logger _logger;
   final GetSummaryStatusChangesUseCase _getSummaryStatusChangesUseCase;
   final GetDebtsSummaryChangesUseCase _getDebtsSummaryChangesUseCase;
 
@@ -49,8 +46,7 @@ class DebtsSummaryCubit extends Cubit<DebtsSummaryState> {
         }
       },
       onError: (error) {
-        _logger.e(error);
-        emit(const DebtsSummaryState.error(DebtsConnectionFailure()));
+        emit(const DebtsSummaryState.error(FailureWhenGettingSummaryStatus()));
       },
     );
   }
@@ -61,8 +57,7 @@ class DebtsSummaryCubit extends Cubit<DebtsSummaryState> {
         emit(DebtsSummaryState.success(summary));
       },
       onError: (error) {
-        _logger.e(error);
-        emit(const DebtsSummaryState.error(DebtsConnectionFailure()));
+        emit(const DebtsSummaryState.error(FailureWhenGettingSummary()));
       },
     );
   }
