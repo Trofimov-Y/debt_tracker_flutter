@@ -69,13 +69,19 @@ final class AuthenticationRemoteDataSourceImpl implements AuthenticationRemoteDa
   }
 
   @override
-  Future<void> deleteUserData() {
-    return _firestore.collection('users').doc(_auth.currentUser!.uid).delete();
+  Future<void> deleteUserData() async {
+    final reference = _firestore.collection('users').doc(_auth.currentUser!.uid);
+    reference.collection('feed').doc().delete();
+    reference.collection('debts').doc().delete();
+    reference.delete();
   }
 
   @override
   Future<void> signOut() => _auth.signOut();
 
   @override
-  Future<void> deleteProfile() => _auth.currentUser!.delete();
+  Future<void> deleteProfile() async {
+    await _auth.currentUser!.delete();
+    _auth.signOut();
+  }
 }
