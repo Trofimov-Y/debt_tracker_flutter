@@ -2,7 +2,6 @@ import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 
 class HeaderActionsButtons extends StatelessWidget {
@@ -47,7 +46,7 @@ class HeaderActionsButtons extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerRight,
             child: _HeaderButton(
-              icon: FontAwesomeIcons.gear,
+              icon: Icons.settings_rounded,
               onPressed: onSettingsPressed,
               text: S.of(context).settings,
             ),
@@ -79,7 +78,7 @@ class _HeaderButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(64),
           ),
           child: IconButton(
-            icon: FaIcon(icon, color: context.colors.primary, size: 32),
+            icon: Icon(icon, color: context.colors.primary, size: 32),
             onPressed: onPressed,
           ),
         ),
