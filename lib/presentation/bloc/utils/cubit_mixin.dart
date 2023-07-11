@@ -1,8 +1,7 @@
 import 'package:debt_tracker/domain/errors/failure.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-
-final _cubitsLogger = Logger(printer: PrettyPrinter());
 
 mixin CubitMixin {
   TaskEither<Failure, T> createTask<T>(
@@ -12,7 +11,7 @@ mixin CubitMixin {
     final task = TaskEither.tryCatch(() {
       return job();
     }, (error, stackTrace) {
-      _cubitsLogger.e(error.toString(), error, stackTrace);
+      GetIt.instance.get<Logger>().e(error.toString(), error, stackTrace);
       return onError(error);
     });
     return task;

@@ -1,9 +1,8 @@
 import 'package:debt_tracker/domain/errors/failure.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
-
-final _repositoriesLogger = Logger(printer: PrettyPrinter());
 
 mixin RepositoryMixin {
   TaskEither<Failure, T> createTask<T>(
@@ -11,19 +10,22 @@ mixin RepositoryMixin {
     Failure Function(Object error) onError,
   ) {
     final task = TaskEither.tryCatch(() {
-      _repositoriesLogger.i(job);
+      GetIt.instance.get<Logger>().i(job);
       return job();
     }, (error, stackTrace) {
-      _repositoriesLogger.e(error.toString(), error, stackTrace);
+      GetIt.instance.get<Logger>().e(error.toString(), error, stackTrace);
       return onError(error);
     });
     return task;
   }
 
   Stream<T> wrapStream<T>(Stream<T> stream) {
-    stream.doOnError((error, stackTrace) {
-      _repositoriesLogger.e(error.toString(), error, stackTrace);
+    return stream.doOnData(
+      (event) {
+        GetIt.instance.get<Logger>().i(event);
+      },
+    ).doOnError((error, stackTrace) {
+      GetIt.instance.get<Logger>().e(error.toString(), error, stackTrace);
     });
-    return stream;
   }
 }

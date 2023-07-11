@@ -5,29 +5,31 @@ import 'package:logger/logger.dart';
 
 @lazySingleton
 class AppRouterObserver extends AutoRouterObserver {
-  final Logger _routingLogger = Logger(printer: PrettyPrinter());
+  AppRouterObserver(this._logger);
+
+  final Logger _logger;
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    _routingLogger.d('New route pushed: ${route.settings.name}');
+    _logger.d('New route pushed: ${route.settings.name}');
     super.didPush(route, previousRoute);
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    _routingLogger.v('Route poped: ${route.settings.name}');
+    _logger.v('Route poped: ${route.settings.name}');
     super.didPop(route, previousRoute);
   }
 
   @override
   void didRemove(Route route, Route? previousRoute) {
-    _routingLogger.d('Route removed: ${route.settings.name}');
+    _logger.d('Route removed: ${route.settings.name}');
     super.didRemove(route, previousRoute);
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
-    _routingLogger.d(
+    _logger.d(
       'Route replaced: from ${oldRoute?.settings.name} to ${newRoute?.settings.name}',
     );
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
@@ -35,13 +37,15 @@ class AppRouterObserver extends AutoRouterObserver {
 
   @override
   void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) {
-    _routingLogger.d('Tab route initialized: ${route.name}');
+    _logger.d('Tab route initialized: ${route.name}');
     super.didInitTabRoute(route, previousRoute);
   }
 
   @override
   void didChangeTabRoute(TabPageRoute route, TabPageRoute previousRoute) {
-    _routingLogger.d('Tab route changed: from ${previousRoute.name} to ${route.name}');
+    _logger.d(
+      'Tab route changed: from ${previousRoute.name} to ${route.name}',
+    );
     super.didChangeTabRoute(route, previousRoute);
   }
 }
