@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/core/extensions/bool_extensions.dart';
+import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/pages/home/cubits/debts_feed/debts_feed_cubit.dart';
 import 'package:debt_tracker/presentation/pages/home/cubits/debts_summary/debts_summary_cubit.dart';
 import 'package:debt_tracker/presentation/pages/home/delegates/home_persistent_header_delegate.dart';
@@ -43,12 +44,8 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
         final debtsFeedCubit = context.watch<DebtsFeedCubit>();
         final debtsSummaryCubit = context.watch<DebtsSummaryCubit>();
         final gropedActions = groupActionsByDate(
-          debtsFeedCubit.state.maybeMap(
-            success: (state) => state.actions,
-            orElse: () => const [],
-          ),
+          debtsFeedCubit.state.maybeMap(success: (state) => state.actions, orElse: () => const []),
         );
-
         return Scaffold(
           body: CustomScrollView(
             physics: gropedActions.isEmpty.when(
@@ -61,7 +58,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
                   minExtentProtoType: debtsSummaryCubit.state.maybeMap(
                     success: (state) {
                       return Container(
-                        height: 56 + MediaQuery.paddingOf(context).top,
+                        height: 64 + MediaQuery.paddingOf(context).top,
                         alignment: Alignment.bottomCenter,
                         padding: const EdgeInsets.only(bottom: 16),
                         child: HeaderStatusBar(
@@ -73,12 +70,12 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
                         ),
                       );
                     },
-                    orElse: () => SizedBox(height: MediaQuery.paddingOf(context).top),
+                    orElse: () => SizedBox(height: context.padding.top),
                   ),
                   maxExtentProtoType: Container(
                     height: debtsSummaryCubit.state.maybeMap(
-                      success: (state) => 220 + MediaQuery.paddingOf(context).top,
-                      orElse: () => 120 + MediaQuery.paddingOf(context).top,
+                      success: (state) => 220 + context.padding.top,
+                      orElse: () => 128 + context.padding.top,
                     ),
                     padding: const EdgeInsets.only(left: 24, right: 24, bottom: 20, top: 16),
                     child: Column(
@@ -147,7 +144,12 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
                             itemCount: actions!.length,
                             itemBuilder: (context, index) {
                               final action = actions[index];
-                              return FeedActionListTile(onTap: () {}, action: action);
+                              return FeedActionListTile(
+                                onTap: () {
+                                  context.router.push(DebtDetailsRoute(debtId: action.debtId));
+                                },
+                                action: action,
+                              );
                             },
                           ),
                         );
@@ -160,7 +162,7 @@ class HomePage extends StatelessWidget implements AutoRouteWrapper {
                   child: ErrorStateWidget(onRetryPressed: debtsFeedCubit.onRetryPressed),
                 ),
               ),
-              SliverGap(MediaQuery.paddingOf(context).bottom + 8),
+              SliverGap(context.padding.bottom + 8),
             ],
           ),
         );
