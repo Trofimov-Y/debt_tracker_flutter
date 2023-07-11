@@ -13,6 +13,8 @@ class DebtModel {
     required this.incurredDate,
     required this.type,
     required this.avatarUrl,
+    required this.currencyCode,
+    required this.currencySymbol,
   });
 
   factory DebtModel.fromJson(Map<String, dynamic> json) => _$DebtModelFromJson(json);
@@ -25,6 +27,8 @@ class DebtModel {
   final DateTime incurredDate;
   final String type;
   final String? avatarUrl;
+  final String currencyCode;
+  final String currencySymbol;
 
   Map<String, dynamic> toJson() => _$DebtModelToJson(this);
 }

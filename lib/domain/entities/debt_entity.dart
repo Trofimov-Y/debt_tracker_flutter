@@ -12,6 +12,8 @@ class DebtEntity with _$DebtEntity {
     required String name,
     required String description,
     required double amount,
+    required String currencyCode,
+    required String currencySymbol,
     required DateTime incurredDate,
     required DateTime? dueDate,
     required DebtType type,
