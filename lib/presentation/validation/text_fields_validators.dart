@@ -13,11 +13,14 @@ FormFieldValidator<String> emptyValidator(String errorText) {
   return (String? value) => value.isNotNullOrBlank ? null : errorText;
 }
 
-FormFieldValidator<String> amountValidator(
-  String emptyErrorText,
-  String lessThanZeroErrorText,
-) {
+FormFieldValidator<String> currencyAmountValidator({
+  required String emptyErrorText,
+  required String lessThanZeroErrorText,
+  required String currencyNotSelectedErrorText,
+  required String? currencyCode,
+}) {
   return (String? value) {
+    if (currencyCode == null) return currencyNotSelectedErrorText;
     if (value.isNullOrEmpty) return emptyErrorText;
     if (double.parse(value!) <= 0) return lessThanZeroErrorText;
     return null;
