@@ -38,7 +38,7 @@ class DebtDetailsCubit extends Cubit<DebtDetailsState> {
         emit(DebtDetailsState.success(debt));
       },
       onError: (failure) {
-        emit(const DebtDetailsState.error(FailureWhenGettingDebt()));
+        emit(const DebtDetailsState.error(Failure.getDebt()));
       },
     );
   }

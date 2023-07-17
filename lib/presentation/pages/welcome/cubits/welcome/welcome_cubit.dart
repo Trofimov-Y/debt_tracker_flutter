@@ -31,12 +31,12 @@ final class WelcomeCubit extends Cubit<WelcomeState> with CubitMixin {
         if (account == null) throw Exception();
         return account;
       },
-      (_) => const FailureWhileGoogleSignIn(),
+      (_) => const Failure.googleSignIn(),
     ).flatMap(
       (account) {
         return createTask(
           () => account.authentication,
-          (_) => const FailureWhileFindingGoogleAccount(),
+          (_) => const Failure.findGoogleAccount(),
         ).flatMap(
           (auth) {
             return TaskEither<Failure, void>(

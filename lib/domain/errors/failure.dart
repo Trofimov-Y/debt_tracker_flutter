@@ -1,13 +1,36 @@
-part 'authentication_failures.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'debts_failures.dart';
+part 'failure.freezed.dart';
 
-part 'profile_failures.dart';
+@freezed
+class Failure with _$Failure {
+  const factory Failure.googleSignIn() = _FailureWhileGoogleSignIn;
 
-part 'settings_failures.dart';
+  const factory Failure.findGoogleAccount() = _FailureWhileFindingGoogleAccount;
 
-sealed class Failure {
-  const Failure({this.error});
+  const factory Failure.signOut() = _FailureWhileSignOut;
 
-  final Object? error;
+  const factory Failure.getFeed() = _FailureWhenGettingFeed;
+
+  const factory Failure.getDebtsSummary() = _FailureWhenGettingDebtsSummary;
+
+  const factory Failure.getDebts() = _FailureWhenGettingDebts;
+
+  const factory Failure.getDebt() = _FailureWhenGettingDebt;
+
+  const factory Failure.createDebt() = _FailureWhileCreatingDebt;
+
+  const factory Failure.deleteDebt() = _FailureWhileDeletingDebt;
+
+  const factory Failure.editDebt() = _FailureWhileEditDebt;
+
+  const factory Failure.deleteProfile() = _FailureWhileDeletingProfile;
+
+  const factory Failure.deleteUserData() = _FailureWhileDeletingUserData;
+
+  const factory Failure.setSummaryCurrencyCode() = _FailureWhileSetSummaryCurrencyCode;
+
+  const factory Failure.setSummaryStatus() = _FailureWhileSetSummaryStatus;
+
+  const factory Failure.getSummaryStatus() = _FailureWhenGettingSummaryStatus;
 }

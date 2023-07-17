@@ -4,24 +4,52 @@ import 'package:flutter/cupertino.dart';
 
 extension PresentationFailureExtension on Failure {
   String message(BuildContext context) {
-    return switch (this) {
-      //TODO Add localization for all failures
-
-      FailureWhenGettingSummaryStatus() => S.of(context).googleSignInFailedFailure,
-      FailureWhileSetSummaryStatus() => S.of(context).googleSignInFailedFailure,
-      FailureWhileSetSummaryCurrencyCode() => S.of(context).googleSignInFailedFailure,
-      FailureWhileEditDebt() => S.of(context).googleSignInFailedFailure,
-      FailureWhileDeletingDebt() => S.of(context).googleSignInFailedFailure,
-      FailureWhileCreatingDebt() => S.of(context).googleSignInFailedFailure,
-      FailureWhenGettingDebts() => S.of(context).googleSignInFailedFailure,
-      FailureWhenGettingDebt() => S.of(context).googleSignInFailedFailure,
-      FailureWhileGoogleSignIn() => S.of(context).googleSignInFailedFailure,
-      FailureWhileFindingGoogleAccount() => S.of(context).googleSignInAccountNotFoundFailure,
-      FailureWhileDeletingProfile() => S.of(context).generaFailure,
-      FailureWhileSignOut() => S.of(context).generaFailure,
-      FailureWhileDeletingUserData() => S.of(context).generaFailure,
-      FailureWhenGettingSummary() => S.of(context).generaFailure,
-      FailureWhenGettingFeed() => S.of(context).generaFailure,
-    };
+    return map(
+      googleSignIn: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      findGoogleAccount: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      signOut: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      getFeed: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      getDebtsSummary: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      getDebts: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      getDebt: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      createDebt: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      deleteDebt: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      editDebt: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      deleteProfile: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      deleteUserData: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      setSummaryCurrencyCode: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      setSummaryStatus: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+      getSummaryStatus: (value) {
+        return S.of(context).googleSignInFailedFailure;
+      },
+    );
   }
 }

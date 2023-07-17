@@ -33,7 +33,7 @@ class DebtDetailsRepositoryImpl with RepositoryMixin implements DebtDetailsRepos
   Future<Either<Failure, void>> deleteDebt(String id) {
     final task = createTask(
       () => _debtDetailsRemoteDataSource.deleteDebt(id),
-      (_) => const FailureWhileDeletingDebt(),
+      (_) => const Failure.deleteDebt(),
     );
     return task.run();
   }
@@ -44,7 +44,7 @@ class DebtDetailsRepositoryImpl with RepositoryMixin implements DebtDetailsRepos
       () => _debtDetailsRemoteDataSource.editDebt(
         _debtMapper.convert<DebtEntity, DebtModel>(entity),
       ),
-      (_) => const FailureWhileEditDebt(),
+      (_) => const Failure.editDebt(),
     );
     return task.run();
   }

@@ -33,7 +33,7 @@ class ProfileRepositoryImpl with RepositoryMixin implements ProfileRepository {
   Future<Either<Failure, void>> setSummaryCurrencyCode(String currencyCode) {
     final task = createTask(
       () => _profileRemoteDataSource.setSummaryCurrencyCode(currencyCode),
-      (_) => const FailureWhileSetSummaryCurrencyCode(),
+      (_) => const Failure.setSummaryCurrencyCode(),
     );
     return task.run();
   }
@@ -52,7 +52,7 @@ class ProfileRepositoryImpl with RepositoryMixin implements ProfileRepository {
   Future<Either<Failure, void>> setSummaryStatus(bool status) {
     final task = createTask(
       () => _profileRemoteDataSource.setSummaryStatus(status),
-      (_) => const FailureWhileSetSummaryStatus(),
+      (_) => const Failure.setSummaryStatus(),
     );
     return task.run();
   }

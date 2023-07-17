@@ -36,7 +36,7 @@ class AuthenticationRepositoryImpl with RepositoryMixin implements Authenticatio
         idToken: idToken,
         accessToken: accessToken,
       ),
-      (_) => const FailureWhileGoogleSignIn(),
+      (_) => const Failure.googleSignIn(),
     );
     return task.run();
   }
@@ -45,11 +45,11 @@ class AuthenticationRepositoryImpl with RepositoryMixin implements Authenticatio
   Future<Either<Failure, void>> deleteProfile() {
     final task = createTask(
       () => _authenticationRemoteDataSource.deleteUserData(),
-      (_) => const FailureWhileDeletingUserData(),
+      (_) => const Failure.deleteUserData(),
     ).flatMap(
       (_) => createTask(
         () => _authenticationRemoteDataSource.deleteProfile(),
-        (_) => const FailureWhileDeletingProfile(),
+        (_) => const Failure.deleteProfile(),
       ),
     );
     return task.run();
@@ -59,7 +59,7 @@ class AuthenticationRepositoryImpl with RepositoryMixin implements Authenticatio
   Future<Either<Failure, void>> signOut() {
     final task = createTask(
       () => _authenticationRemoteDataSource.signOut(),
-      (error) => const FailureWhileSignOut(),
+      (error) => const Failure.signOut(),
     );
     return task.run();
   }
