@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/pages/debt_details/cubit/debt_details_cubit.dart';
+import 'package:debt_tracker/presentation/widgets/errors/error_state_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -66,9 +67,9 @@ class DebtDetailsPage extends StatelessWidget implements AutoRouteWrapper {
                   ];
                 },
                 error: (_) => [
-                  const SliverFillRemaining(
-                    child: Center(
-                      child: Text('Error'),
+                  SliverFillRemaining(
+                    child: ErrorStateWidget(
+                      onRetryPressed: cubit.onRetryPressed,
                     ),
                   )
                 ],

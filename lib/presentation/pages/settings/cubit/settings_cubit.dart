@@ -43,6 +43,13 @@ class SettingsCubit extends Cubit<SettingsState> {
     _signOutUseCase();
   }
 
+  Future<void> onRetryPressed() async {
+    emit(const SettingsState.initial());
+    await _summarySubscription?.cancel();
+    _summarySubscription = null;
+    _onCreate();
+  }
+
   Future<void> onDeleteProfileTap() async {
     _deleteProfileUseCase();
   }

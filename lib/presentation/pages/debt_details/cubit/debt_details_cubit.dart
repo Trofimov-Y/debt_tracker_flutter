@@ -43,6 +43,13 @@ class DebtDetailsCubit extends Cubit<DebtDetailsState> {
     );
   }
 
+  Future<void> onRetryPressed() async {
+    emit(const DebtDetailsState.initial());
+    await _debtChangesSubscription?.cancel();
+    _debtChangesSubscription = null;
+    _onCreate();
+  }
+
   Future<void> onDeletePressed() async {
     state.mapOrNull(
       success: (state) {
