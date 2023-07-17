@@ -5,6 +5,7 @@ import 'package:debt_tracker/generated/l10n.dart';
 import 'package:debt_tracker/presentation/extensions/build_context_extensions.dart';
 import 'package:debt_tracker/presentation/extensions/text_style_extensions.dart';
 import 'package:debt_tracker/presentation/pages/settings/cubit/settings_cubit.dart';
+import 'package:debt_tracker/presentation/widgets/errors/error_state_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -46,10 +47,10 @@ class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
                       child: ListTile(
                         contentPadding: const EdgeInsets.only(left: 24, right: 24),
                         title: Text(
-                          'Summary panel',
+                          S.of(context).summaryPanel,
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
-                        subtitle: Text('Show summary panel on home screen'),
+                        subtitle: Text(S.of(context).summaryPanelDescription),
                         trailing: Switch(
                           value: state.summaryEnabled,
                           onChanged: cubit.onSummaryStatusChanged,
@@ -71,10 +72,10 @@ class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
                         },
                         contentPadding: const EdgeInsets.only(left: 24, right: 24),
                         title: Text(
-                          'Summary currency',
+                          S.of(context).summaryCurrency,
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
-                        subtitle: Text('Currency for summary panel'),
+                        subtitle: Text(S.of(context).summaryCurrencyDescription),
                         trailing: Text(
                           state.summaryCurrencyCode,
                           style: context.textTheme.bodyMedium?.medium,
@@ -98,8 +99,10 @@ class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
                         contentPadding: const EdgeInsets.only(left: 28, right: 16),
                         title: Text(
                           S.of(context).deleteAccount,
-                          style:
-                              TextStyle(color: context.colors.error, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                            color: context.colors.error,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         subtitle: Text(S.of(context).existingDataDeleted),
                       ),
@@ -107,9 +110,7 @@ class SettingsPage extends StatelessWidget implements AutoRouteWrapper {
                   ];
                 },
                 error: (_) => [
-                  const SliverFillRemaining(
-                    child: Center(child: Text('Error')),
-                  )
+                  SliverFillRemaining(child: ErrorStateWidget(onRetryPressed: cubit.onRetryPressed))
                 ],
               ),
             ],
