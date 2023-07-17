@@ -41,7 +41,7 @@ class AllDebtsCubit extends Cubit<AllDebtsState> {
         );
       },
       onError: (error) {
-        emit(const AllDebtsState.error(FailureWhenGettingDebts()));
+        emit(const AllDebtsState.error(Failure.getDebts()));
       },
     );
   }

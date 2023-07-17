@@ -46,7 +46,7 @@ class DebtsSummaryCubit extends Cubit<DebtsSummaryState> {
         }
       },
       onError: (error) {
-        emit(const DebtsSummaryState.error(FailureWhenGettingSummaryStatus()));
+        emit(const DebtsSummaryState.error(Failure.getSummaryStatus()));
       },
     );
   }
@@ -57,7 +57,7 @@ class DebtsSummaryCubit extends Cubit<DebtsSummaryState> {
         emit(DebtsSummaryState.success(summary));
       },
       onError: (error) {
-        emit(const DebtsSummaryState.error(FailureWhenGettingSummary()));
+        emit(const DebtsSummaryState.error(Failure.getDebtsSummary()));
       },
     );
   }

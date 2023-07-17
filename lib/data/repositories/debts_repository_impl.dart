@@ -49,7 +49,7 @@ class DebtsRepositoryImpl with RepositoryMixin implements DebtsRepository {
       () => _debtsRemoteDataSource.createDebt(
         _debtMapper.convert<DebtEntity, DebtModel>(entity),
       ),
-      (_) => const FailureWhileCreatingDebt(),
+      (_) => const Failure.createDebt(),
     );
     return task.run();
   }
