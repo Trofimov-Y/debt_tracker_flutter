@@ -33,8 +33,8 @@ final class AuthenticationRemoteDataSourceImpl implements AuthenticationRemoteDa
     return _auth.authStateChanges().map((user) {
       if (user == null) return null;
       return UserModel(
-        email: user.email!,
-        name: user.displayName!,
+        email: user.email?? '',
+        name: user.displayName ?? '',
       );
     });
   }
